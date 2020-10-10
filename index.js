@@ -33,6 +33,26 @@ client.on('message', msg => {
 		return msg.channel.send('I can\'t use this command inside DMs!');
 	}
 
+	if (!cooldowns.has(cmd.name)) {
+		cooldowns.set(cmd.name, new Discord.Collection());
+	}
+
+	const now = Date.now();
+	const timestamps = cooldowns.get(cmd.name);
+	const cooldownAmount = (command.cooldown || 0) * 1000;
+
+	if (timestamps.has(msg.author.id)) {
+		const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
+
+		if (now < expirationTime) {
+			const timeLeft = (expirationTime - now) / 1000;
+			return msg.channel.send(`Please wait ${timeLeft.toFixed(1)} more second(s) before doing this again!`);
+		}
+	}
+
+	timestamps.set(msg.author.id, now);
+	setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+
   try {
     cmd.execute(msg, args);
   } catch(error) {
