@@ -13,7 +13,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
-	client.user.setActivity('for any calls', {type: 'LISTENING'});
+	client.user.setActivity('any calls', {type: 'LISTENING'});
 });
 
 client.on('message', msg => {
