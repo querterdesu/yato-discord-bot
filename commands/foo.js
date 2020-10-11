@@ -3,6 +3,7 @@ module.exports = {
 	description: 'Foobar!',
 	aliases: ['fo', 'foobar'],
 	args_required: 0,
+	max_args: 0,
 	usage: '',
 	guildOnly: true,
 	cooldown: 5,

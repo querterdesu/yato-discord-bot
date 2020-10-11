@@ -5,6 +5,8 @@ module.exports = {
   description: 'Get help on commands!',
   aliases: ['cmds', 'commands', 'command', 'cmd'],
   usage: '[command name]',
+  args_required: 0,
+  max_args: 1,
   cooldown: 1,
   execute(message, args) {
     const data = [];
@@ -37,6 +39,7 @@ module.exports = {
     if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
     if (command.description) data.push(`**Description:** ${command.description}`);
     if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
+    if (command.args_required) data.push(`**Required arguments:** ${command.args_required}`);
 
     data.push(`**Cooldown:** ${command.cooldown || 0} second(s)`)
 

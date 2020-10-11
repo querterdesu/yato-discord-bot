@@ -28,17 +28,26 @@ client.on('message', msg => {
 	if (!cmd) return;
 
 	if (cmd.args_required) {
-		if (cmd.args_required !== args.length) {
+		if (cmd.args_required > args.length || cmd.max_args < args.length) {
 			let usage = '';
 			if (cmd.usage) {
-				usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
+					usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
 			}
-	}
+		}
+		if (cmd.args_fail_message) {
+			return msg.channel.send(`${cmd.args_fail_message}${usage}`);
+		}
 		return msg.channel.send(`Incorrect usage!${usage}`);
 	}
 
 	if (cmd.guildOnly && msg.channel.type === 'dm') {
 		return msg.channel.send('I can\'t use this command inside DMs!');
+	}
+
+	if (cmd.permissions) {
+		if (!msg.author.hasPermission(cmd.permissions, { checkAdmin: true, checkOwner: true }) {
+			return msg.channel.send('You don\'t have the sufficient permissions to use this command!');
+		}
 	}
 
 	if (!cooldowns.has(cmd.name)) {
