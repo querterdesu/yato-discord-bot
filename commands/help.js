@@ -8,7 +8,7 @@ module.exports = {
   cooldown: 1,
   execute(message, args) {
     const data = [];
-    const { commands } = message.client();
+    const { commands } = message.client;
 
     if (!args.length) {
       data.push('Here\'s a list of all of my commands:');
