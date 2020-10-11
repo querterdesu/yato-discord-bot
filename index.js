@@ -27,12 +27,13 @@ client.on('message', msg => {
 
 	if (!cmd) return;
 
-	if (cmd.args_required !== args.length) {
-		let usage = '';
-		if (cmd.usage) {
-			usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
-		}
-
+	if (cmd.args_required) {
+		if (cmd.args_required !== args.length) {
+			let usage = '';
+			if (cmd.usage) {
+				usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
+			}
+	}
 		return msg.channel.send(`Incorrect usage!${usage}`);
 	}
 
