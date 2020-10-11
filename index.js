@@ -28,7 +28,12 @@ client.on('message', msg => {
 	if (!cmd) return;
 
 	if (cmd.args_required !== args.length) {
-		return msg.channel.send(`Incorrect usage! \nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``);
+		let usage = '';
+		if (cmd.usage) {
+			usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
+		}
+
+		return msg.channel.send(`Incorrect usage!${usage}`);
 	}
 
 	if (cmd.guildOnly && msg.channel.type === 'dm') {
