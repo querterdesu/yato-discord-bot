@@ -22,9 +22,10 @@ client.on('message', msg => {
 	const args = msg.content.slice(prefix.length).trim().split(' ');
 	const cmdName = args.shift().toLowerCase();
 
-	if (!client.commands.has(cmdName)) return;
 
-	const cmd = client.commands.get(cmdName);
+	const cmd = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
+
+	if (!cmd) return;
 
 	if (cmd.args_required !== args.length) {
 		return msg.channel.send(`Incorrect usage! \nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``);

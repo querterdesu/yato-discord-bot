@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'foo',
 	description: 'Foobar!',
+	aliases: ['fo', 'foobar'],
 	args_required: 0,
 	usage: '',
 	guildOnly: true,
