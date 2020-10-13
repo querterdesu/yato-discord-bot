@@ -44,7 +44,7 @@ client.on('message', msg => {
 		return msg.channel.send('I can\'t use this command inside DMs!');
 	}
 
-	if (cmd.permissions) {
+	if (cmd.permissions != '') {
 		if (!msg.author.hasPermission(cmd.permissions) {
 			return msg.channel.send('You don\'t have the sufficient permissions to use this command!');
 		}
