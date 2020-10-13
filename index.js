@@ -45,7 +45,7 @@ client.on('message', msg => {
 	}
 
 	if (cmd.permissions) {
-		if (!msg.author.hasPermission(cmd.permissions, { checkAdmin: true, checkOwner: true }) {
+		if (!msg.author.hasPermission(cmd.permissions) {
 			return msg.channel.send('You don\'t have the sufficient permissions to use this command!');
 		}
 	}
