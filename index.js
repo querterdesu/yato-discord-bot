@@ -13,7 +13,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
-	client.user.setActivity('any calls', {type: 'LISTENING'});
+	client.user.setActivity('any calls', { type: 'LISTENING' });
 });
 
 client.on('message', msg => {
@@ -23,15 +23,15 @@ client.on('message', msg => {
 	const cmdName = args.shift().toLowerCase();
 
 
-	const cmd = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
+	const cmd = client.commands.get(cmdName) || client.commands.find(command => command.aliases && command.aliases.includes(cmdName));
 
 	if (!cmd) return;
 
 	if (cmd.args_required) {
+		let usage = '';
 		if (cmd.args_required > args.length || cmd.max_args < args.length) {
-			let usage = '';
 			if (cmd.usage) {
-					usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
+				usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
 			}
 		}
 		if (cmd.args_fail_message) {
@@ -45,7 +45,7 @@ client.on('message', msg => {
 	}
 
 	if (cmd.permissions != '') {
-		if (!msg.author.hasPermission(cmd.permissions) {
+		if (!msg.author.hasPermission(cmd.permissions)) {
 			return msg.channel.send('You don\'t have the sufficient permissions to use this command!');
 		}
 	}
@@ -70,9 +70,10 @@ client.on('message', msg => {
 	timestamps.set(msg.author.id, now);
 	setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
 
-  try {
-    cmd.execute(msg, args);
-  } catch(error) {
+	try {
+		cmd.execute(msg, args);
+	}
+	catch(error) {
 		console.error(error);
 		msg.channel.send('There was an error executing that command! \nPlease contact the server administrators.');
 	}
