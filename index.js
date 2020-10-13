@@ -33,11 +33,11 @@ client.on('message', msg => {
 			if (cmd.usage) {
 				usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
 			}
+			if (cmd.args_fail_message) {
+				return msg.channel.send(`${cmd.args_fail_message}${usage}`);
+			}
+			return msg.channel.send(`Incorrect usage!${usage}`);
 		}
-		if (cmd.args_fail_message) {
-			return msg.channel.send(`${cmd.args_fail_message}${usage}`);
-		}
-		return msg.channel.send(`Incorrect usage!${usage}`);
 	}
 
 	if (cmd.guildOnly && msg.channel.type === 'dm') {
