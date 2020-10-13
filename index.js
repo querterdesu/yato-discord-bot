@@ -34,6 +34,7 @@ client.on('message', msg => {
 				usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
 			}
 			if (cmd.args_fail_message) {
+				console.log('error');
 				return msg.channel.send(`${cmd.args_fail_message}${usage}`);
 			}
 			return msg.channel.send(`Incorrect usage!${usage}`);
