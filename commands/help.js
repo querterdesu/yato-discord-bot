@@ -18,7 +18,7 @@ module.exports = {
 			return message.author.send(data, { split:true })
 				.then(() => {
 					if (message.channel.type === 'dm') return;
-					message.reply('I\'ve sent you a list of all of my commands!');
+					message.react('👍');
 				})
 				.catch(error => {
 					console.error(`Could not send commands to ${message.author.tag}.\n`, error);
