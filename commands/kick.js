@@ -13,7 +13,7 @@ module.exports = {
 		if (userTagged) {
 			const memberTagged = message.guild.member(userTagged);
 			if (memberTagged) {
-				if (message.member.roles.highest.comparePositionTo(memberTagged.roles.highest) === 0) {
+				if (message.member.roles.highest.comparePositionTo(memberTagged.roles.highest) > 0) {
 					memberTagged.kick(reason);
 				}
 				else {
