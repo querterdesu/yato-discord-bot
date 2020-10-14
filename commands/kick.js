@@ -8,13 +8,12 @@ module.exports = {
 	cooldown: 0,
 	permissions: ['KICK_MEMBERS'],
 	execute(message, args) {
-		const reason = args.shift.join(' ');
 		const userTagged = message.mentions.users.first();
 		if (userTagged) {
 			const memberTagged = message.guild.member(userTagged);
 			if (memberTagged) {
 				if (message.member.roles.highest.comparePositionTo(memberTagged.roles.highest) > 0) {
-					memberTagged.kick(reason).catch(err => {
+					memberTagged.kick('Kicked').catch(err => {
 						console.error(err);
 						message.channel.send('Could not click user!');
 					});
