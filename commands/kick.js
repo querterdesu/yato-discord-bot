@@ -14,7 +14,10 @@ module.exports = {
 			const memberTagged = message.guild.member(userTagged);
 			if (memberTagged) {
 				if (message.member.roles.highest.comparePositionTo(memberTagged.roles.highest) > 0) {
-					memberTagged.kick(reason);
+					memberTagged.kick(reason).catch(err => {
+						console.error(err);
+						message.channel.send('Could not click user!');
+					});
 				}
 				else {
 					return message.channel.send('You don\'t have sufficent permissions.');
