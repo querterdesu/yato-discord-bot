@@ -20,5 +20,13 @@ module.exports = {
 			console.error(err);
 			message.channel.send('There was an error trying to clear these messages!');
 		});
+		message.channel.send('Successfully cleared the messages!');
+		message.channel.send(`Messages cleared: ${amount}`);
+		setTimeout(() =>
+			message.channel.bulkDelete(1).catch(err => {
+				console.error(err);
+				message.channel.send('There was an error.');
+			}),
+		2500);
 	},
 };
