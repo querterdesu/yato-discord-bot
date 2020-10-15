@@ -9,13 +9,15 @@ module.exports = {
 	permissions: ['KICK_MEMBERS'],
 	execute(message, args) {
 		const userTagged = message.mentions.users.first();
+		const misc = args.shift;
+		const reason = args.join(' ');
 		if (userTagged) {
 			const memberTagged = message.guild.member(userTagged);
 			if (memberTagged) {
 				if (message.member.roles.highest.comparePositionTo(memberTagged.roles.highest) > 0) {
-					memberTagged.kick('Kicked').catch(err => {
+					memberTagged.kick(reason).catch(err => {
 						console.error(err);
-						message.channel.send('Could not click user!');
+						message.channel.send('Could not kick user!');
 					});
 				}
 				else {
