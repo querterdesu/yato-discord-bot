@@ -1,5 +1,5 @@
 const { prefix } = require ('../config.js');
-const messageUtil = require('./messages.js');
+const messageUtil = require('../messages.js');
 
 module.exports = {
 	name: 'help',
