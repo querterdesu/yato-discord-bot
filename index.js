@@ -5,6 +5,7 @@ const { prefix, token } = require('./config.js');
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
+const messageUtil = require('./messages.js');
 
 for (const file of commandFiles) {
 	const cmd = require(`./commands/${file}`);
@@ -34,19 +35,19 @@ client.on('message', msg => {
 				usage += `\nCorrect usage of command: \`${prefix}${cmd.name} ${cmd.usage}\``;
 			}
 			if (cmd.args_fail_message) {
-				return msg.channel.send(`${cmd.args_fail_message}${usage}`);
+				return messageUtil.sendError(msg, `${cmd.args_fail_message}${usage}`);
 			}
-			return msg.channel.send(`Incorrect usage!${usage}`);
+			return messageUtil.sendError(msg, `Incorrect usage!${usage}`);
 		}
 	}
 
 	if (cmd.guildOnly && msg.channel.type === 'dm') {
-		return msg.channel.send('I can\'t use this command inside DMs!');
+		return messageUtil.sendError(msg, 'I can\'t use this command inside DMs!');
 	}
 
 	if (cmd.permissions != '') {
 		if (!msg.member.hasPermission(cmd.permissions)) {
-			return msg.channel.send('You don\'t have the sufficient permissions to use this command!');
+			return messageUtil.sendError(msg, 'You don\'t have the sufficient permissions to use this command!');
 		}
 	}
 
@@ -63,7 +64,7 @@ client.on('message', msg => {
 
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			return msg.channel.send(`Please wait ${timeLeft.toFixed(1)} more second(s) before doing this again!`);
+			return messageUtil.sendError(msg, `Please wait ${timeLeft.toFixed(1)} more second(s) before doing this again!`);
 		}
 	}
 
@@ -75,7 +76,7 @@ client.on('message', msg => {
 	}
 	catch(error) {
 		console.error(error);
-		msg.channel.send('There was an error executing that command! \nPlease contact the server administrators.');
+		messageUtil.sendError(msg, 'There was an error executing that command! \nPlease contact the server administrators.');
 	}
 });
 

@@ -1,4 +1,5 @@
 const { prefix } = require ('../config.js');
+const messageUtil = require('./messages.js');
 
 module.exports = {
 	name: 'help',
@@ -22,7 +23,7 @@ module.exports = {
 				})
 				.catch(error => {
 					console.error(`Could not send commands to ${message.author.tag}.\n`, error);
-					message.reply('I could not DM you! Perhaps you have messages disabled?');
+					messageUtil.sendError(message, 'I could not DM you! Perhaps you have messages disabled?');
 				});
 		}
 
@@ -30,7 +31,7 @@ module.exports = {
 		const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
 		if (!command) {
-			return message.reply('Could not find the command you were looking for!');
+			return messageUtil.sendError(message, 'Could not find the command you were looking for!');
 		}
 
 		data.push(`**Name:** ${command.name}`);

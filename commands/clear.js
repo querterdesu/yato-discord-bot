@@ -1,3 +1,5 @@
+const messageUtil = require('./messages.js');
+
 module.exports = {
 	name: 'clear',
 	description: 'Clear messages up to 100!',
@@ -11,20 +13,20 @@ module.exports = {
 	execute(message, args) {
 		const amount = parseInt(args[0]) + 1;
 		if (isNaN(amount)) {
-			return message.channel.send('The argument you provided isn\'t a number.');
+			return messageUtil.sendError(message, 'The argument you provided isn\'t a number.');
 		}
 		else if (amount < 1 || amount > 99) {
-			return message.channel.send('You input a wrong number, either too small or too large for the command.');
+			return messageUtil.sendError(message, 'You input a wrong number, either too small or too large for the command.');
 		}
 		message.channel.bulkDelete(amount).catch(err => {
 			console.error(err);
-			message.channel.send('There was an error trying to clear these messages!');
+			messageUtil.sendError(message, 'There was an error trying to clear these messages!');
 		});
-		message.channel.send('Successfully cleared the messages!');
+		messageUtil.sendSuccess(message, 'Successfully cleared the messages!');
 		setTimeout(() =>
 			message.channel.bulkDelete(1).catch(err => {
 				console.error(err);
-				message.channel.send('There was an error.');
+				messageUtil.sendError(message, 'There was an error.');
 			}),
 		2500);
 	},

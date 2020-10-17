@@ -1,3 +1,5 @@
+const messageUtil = require('./messages.js');
+
 module.exports = {
 	name: 'kick',
 	description: 'Kicks the specified user.',
@@ -17,11 +19,12 @@ module.exports = {
 				if (message.member.roles.highest.comparePositionTo(memberTagged.roles.highest) > 0) {
 					memberTagged.kick(reason).catch(err => {
 						console.error(err);
-						message.channel.send('Could not kick user!');
+						messageUtil.sendError(message, 'Could not kick user!');
 					});
+					messageUtil.sendSuccess(message, 'Successfully kicked the user!');
 				}
 				else {
-					return message.channel.send('You don\'t have sufficent permissions.');
+					return messageUtil.sendError(message, 'You don\'t have sufficent permissions.');
 				}
 			}
 		}
