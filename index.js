@@ -1,7 +1,10 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token } = require('./config.js');
+const {
+	prefix,
+	token
+} = require('./config.js');
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
@@ -14,8 +17,12 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
-	client.user.setActivity('any calls', { type: 'LISTENING' });
+	client.user.setActivity('phone calls', {
+		type: 'STREAMING',
+		url: 'https://www.twitch.tv/realquerter',
+	});
 });
+
 
 client.on('message', msg => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
@@ -74,7 +81,7 @@ client.on('message', msg => {
 	try {
 		cmd.execute(msg, args);
 	}
-	catch(error) {
+ catch (error) {
 		console.error(error);
 		messageUtil.sendError(msg, 'There was an error executing that command! \nPlease contact the server administrators.');
 	}

@@ -22,12 +22,7 @@ module.exports = {
 			console.error(err);
 			messageUtil.sendError(message, 'There was an error trying to clear these messages!');
 		});
-		messageUtil.sendSuccess(message, 'Successfully cleared the messages!');
-		setTimeout(() =>
-			message.channel.bulkDelete(1).catch(err => {
-				console.error(err);
-				messageUtil.sendError(message, 'There was an error.');
-			}),
-		2500);
+		const msgSuccess = messageUtil.sendSuccess(message, 'Successfully cleared the messages!');
+		msgSuccess.delete({})
 	},
 };
