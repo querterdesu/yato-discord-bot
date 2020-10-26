@@ -10,7 +10,7 @@ module.exports = {
 	guildOnly: true,
 	cooldown: 5,
 	permissions: ['MANAGE_MESSAGES'],
-	execute(message, args) {
+	async execute(message, args) {
 		const amount = parseInt(args[0]) + 1;
 		if (isNaN(amount)) {
 			return messageUtil.sendError(message, 'The argument you provided isn\'t a number.');
@@ -22,12 +22,13 @@ module.exports = {
 			console.error(err);
 			messageUtil.sendError(message, 'There was an error trying to clear these messages!');
 		});
-		messageUtil.sendSuccess(message, 'Successfully cleared the messages!')
-			.then(() => {
-				message.channel.bulkDelete(1).catch(err => {
-					console.error(err);
-					messageUtil.sendError(message, 'There was an error.');
-				});
-			});
+		await messageUtil.sendSuccess(message, 'Successfully cleared the messages!');
+		try {
+			await message.channel.bulkDelete(1);
+		}
+		catch (err) {
+			console.error(err);
+			messageUtil.sendError(message, 'There was an error.');
+		}
 	},
 };

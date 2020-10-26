@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const {
 	prefix,
-	token
+	token,
 } = require('./config.js');
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -15,7 +15,7 @@ for (const file of commandFiles) {
 	client.commands.set(cmd.name, cmd);
 }
 
-client.once('ready', () => {
+client.once('ready', async () => {
 	console.log('Ready!');
 	client.user.setActivity('phone calls', {
 		type: 'STREAMING',
@@ -24,7 +24,7 @@ client.once('ready', () => {
 });
 
 
-client.on('message', msg => {
+client.on('message', async msg => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
 	const args = msg.content.slice(prefix.length).trim().split(' ');
@@ -81,7 +81,7 @@ client.on('message', msg => {
 	try {
 		cmd.execute(msg, args);
 	}
- catch (error) {
+	catch (error) {
 		console.error(error);
 		messageUtil.sendError(msg, 'There was an error executing that command! \nPlease contact the server administrators.');
 	}
