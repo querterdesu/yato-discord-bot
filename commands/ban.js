@@ -26,7 +26,7 @@ module.exports = {
 					});
 					messageUtil.sendSuccess(message, 'Successfully banned the user!');
 					const modlog = memberTagged.channels.cache.get('680019347569377297');
-					modlog.send('pogger?')
+					modlog.send('pogger?');
 				}
 				else {
 					return message.channel.send('You don\'t have sufficent permissions.');
