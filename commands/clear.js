@@ -23,6 +23,6 @@ module.exports = {
 			messageUtil.sendError(message, 'There was an error trying to clear these messages!');
 		});
 		const msgSuccess = messageUtil.sendSuccess(message, 'Successfully cleared the messages!');
-		msgSuccess.delete({})
+		msgSuccess.delete();
 	},
 };
