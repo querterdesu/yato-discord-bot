@@ -14,20 +14,17 @@ module.exports = {
 			return ['✅', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 
-		try {
-			const collected = await message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] });
+		message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(collected => {
 			const reaction = collected.first();
 
 			if (reaction.emoji.name === '✅') {
-				messageUtil.sendInfo('You reacted with ✅.');
+				messageUtil.sendInfo(message, 'You reacted with ✅.');
 			}
 			else if (reaction.emoji.name === '❌') {
-				messageUtil.sendInfo('You reacted with ❌.');
+				messageUtil.sendInfo(message, 'You reacted with ❌.');
 			}
-		}
-		catch (collected) {
-			console.log('You did not react with a check or an X.');
-		}
+
+		}).catch(() => messageUtil.sendError(message, 'You didn\'t react with anything.'));
 
 	},
 };
