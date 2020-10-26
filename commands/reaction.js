@@ -7,7 +7,7 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	async execute(message, args) {
-		const output = messageUtil.sendInfo(message, 'Test reaction');
+		const output = message.channel.send(`✅ | Reacting to this message`);
 		try {
 			await output.react('✅');
 			await output.react('❌');
