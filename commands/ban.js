@@ -25,7 +25,7 @@ module.exports = {
 						messageUtil.sendError(message, 'Could not ban user!');
 					});
 					messageUtil.sendSuccess(message, 'Successfully banned the user!');
-					const modlog = message.member.channels.cache.get('680019347569377297');
+					const modlog = message.client.channels.cache.get('680019347569377297');
 					modlog.send('pogger?');
 				}
 				else {
