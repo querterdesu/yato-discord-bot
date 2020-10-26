@@ -7,11 +7,9 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	async execute(message, args) {
-		message.channel.send(`✅ | Reacting to this message`)
-			.then(sentMessage => {
-				await sentMessage.react('✅');
-				await sentMessage.react('❌');
-			});
+		message.channel.send('✅ | Reacting to this message').then(sentMessage => {
+			sentMessage.react('✅').then(() => sentMessage.react('❌'));
+		});
 		const filter = (reaction, user) => {
 			return ['✅', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
