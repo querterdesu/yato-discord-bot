@@ -7,7 +7,7 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	execute(message, args) {
-		const confirmed = messageUtil.confirmPrompt(message, 60000).then(() => {
+		messageUtil.confirmPrompt(message, 60000).then((confirmed) => {
 			if (confirmed === 1) {
 				messageUtil.sendSuccess(message, 'You accepted the prompt.');
 			}
