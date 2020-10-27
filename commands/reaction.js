@@ -9,7 +9,7 @@ module.exports = {
 	execute(message, args) {
 		let sMsg = '';
 		message.channel.send('✅ | Reacting to this message')
-			.then((sentMessage) => {
+			.then(sentMessage => {
 				sentMessage.react('✅');
 				sentMessage.react('❌');
 				sMsg = sentMessage;
@@ -28,7 +28,7 @@ module.exports = {
 				messageUtil.sendInfo(message, 'You reacted with ❌.');
 			}
 
-		}).catch(() => messageUtil.sendError(message, 'You didn\'t react with anything.'));
+		}).catch(() => { messageUtil.sendError(message, 'You didn\'t react with anything.'); });
 
 	},
 };
