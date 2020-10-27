@@ -7,13 +7,12 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	execute(message, args) {
-		messageUtil.confirmPrompt(message, 60000).then(confirmed => {
-			if (confirmed === 1) {
-				messageUtil.sendSuccess(message, 'You confirmed the message!');
-			}
-			else {
-				messageUtil.sendError(message, 'You denied the message!');
-			}
-		});
+		const confirmed = messageUtil.confirmPrompt(message, 60000);
+		if (confirmed === 1) {
+			messageUtil.sendSuccess(message, 'You accepted the prompt.');
+		}
+		else {
+			messageUtil.sendError(message, 'You denied the prompt.');
+		}
 	},
 };
