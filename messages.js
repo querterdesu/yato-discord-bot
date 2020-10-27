@@ -25,6 +25,6 @@ module.exports = {
 				return 0;
 			}
 
-		}).catch(collected => { console.error(`User did not react. ${collected}`); });
+		}).catch(collected => { console.error(`User did not react. ${collected}`); return -1; });
 	},
 };

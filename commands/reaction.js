@@ -11,8 +11,11 @@ module.exports = {
 			if (confirmed === 1) {
 				messageUtil.sendSuccess(message, 'You accepted the prompt.');
 			}
-			else {
+			else if (confirmed === 0) {
 				messageUtil.sendError(message, 'You denied the prompt.');
+			}
+			else {
+				messageUtil.sendError(message, 'You didn\'t react in time!');
 			}
 		});
 	},
