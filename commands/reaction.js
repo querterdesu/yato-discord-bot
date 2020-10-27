@@ -7,14 +7,14 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	async execute(message, args) {
-		const sentMessage = message.channel.send('Reacting to this message');
-		await sentMessage.react('✅');
-		await sentMessage.react('❌');
+		const sentMessage = message.channel.send('✅ | Reacting to this message')
+			.then(() => sentMessage.react('✅'))
+			.then(() => sentMessage.react('❌'));
 		const filter = (reaction, user) => {
 			return ['✅', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 
-		sentMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(collected => {
+		message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(collected => {
 			const reaction = collected.first();
 
 			if (reaction.emoji.name === '✅') {
