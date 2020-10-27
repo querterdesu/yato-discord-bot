@@ -7,28 +7,22 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	execute(message, args) {
-		let sMsg = '';
-		message.channel.send('✅ | Reacting to this message')
-			.then(sentMessage => {
-				sentMessage.react('✅');
-				sentMessage.react('❌');
-				sMsg = sentMessage;
-			});
+
 		const filter = (reaction, user) => {
 			return ['✅', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 
-		sMsg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(collected => {
+		message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(collected => {
 			const reaction = collected.first();
 
 			if (reaction.emoji.name === '✅') {
-				messageUtil.sendInfo(message, 'You reacted with ✅.');
+				messageUtil.sendSuccess(message, 'You confirmed the message.');
 			}
 			else if (reaction.emoji.name === '❌') {
-				messageUtil.sendInfo(message, 'You reacted with ❌.');
+				messageUtil.sendError(message, 'You denied the message.');
 			}
 
-		}).catch(() => { messageUtil.sendError(message, 'You didn\'t react with anything.'); });
+		}).catch(collected => { messageUtil.sendError(message, 'You didn\'t react with anything.'); });
 
 	},
 };
