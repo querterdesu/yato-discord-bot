@@ -7,7 +7,7 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	async execute(message, args) {
-		const sentMessage = message.channel.send('✅ | Reacting to this message');
+		const sentMessage = messageUtil.sendInfo(message, 'Reacting to this message');
 		await sentMessage.react('✅');
 		await sentMessage.react('❌');
 		const filter = (reaction, user) => {
