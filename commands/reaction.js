@@ -7,6 +7,7 @@ module.exports = {
 	max_args: 999,
 	cooldown: 0,
 	execute(message, args) {
+		message.react('✅').then(() => { message.react('❌'); });
 
 		const filter = (reaction, user) => {
 			return ['✅', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
