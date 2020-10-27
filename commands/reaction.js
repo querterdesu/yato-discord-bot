@@ -6,7 +6,7 @@ module.exports = {
 	args_required: 0,
 	max_args: 999,
 	cooldown: 0,
-	async execute(message, args) {
+	execute(message, args) {
 		let sMsg = '';
 		message.channel.send('✅ | Reacting to this message')
 			.then((sentMessage) => {
