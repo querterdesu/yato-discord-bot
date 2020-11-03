@@ -27,4 +27,8 @@ module.exports = {
 
 		}).catch(collected => { console.error(`User did not react. ${collected}`); return -1; });
 	},
+	modlog(message) {
+		const modlog = message.client.channels.cache.get('680019347569377297');
+		modlog.send(message);
+	},
 };

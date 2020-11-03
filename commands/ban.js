@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Bans the specified user.',
 	args_required: 1,
 	max_args: 999,
-	usage: '<user to ban> [reason] [-d duration: permanent]',
+	usage: '<user to ban> [reason]',
 	guildOnly: true,
 	cooldown: 0,
 	permissions: ['BAN_MEMBERS'],
@@ -17,16 +17,22 @@ module.exports = {
 			const memberTagged = message.guild.member(userTagged);
 			if (memberTagged) {
 				if (message.member.roles.highest.comparePositionTo(memberTagged.roles.highest) > 0) {
-					memberTagged.ban({
-						days: 7,
-						reason: `${reason}`,
-					}).catch(err => {
-						console.error(err);
-						messageUtil.sendError(message, 'Could not ban user!');
+					messageUtil.confirmPrompt(message, 15000).then((confirmed) => {
+						if (confirmed) {
+							memberTagged.ban({
+								days: 7,
+								reason: `${reason}`,
+							}).catch(err => {
+								console.error(err);
+								messageUtil.sendError(message, 'Could not ban user!');
+							});
+							messageUtil.sendSuccess(message, 'Successfully banned the user!');
+							messageUtil.modlog(`Banned user ${userTagged} for reason ${reason}.`);
+						}
+						else {
+							messageUtil.sendSuccess(message, 'Successfully cancelled the prompt!');
+						}
 					});
-					messageUtil.sendSuccess(message, 'Successfully banned the user!');
-					const modlog = message.client.channels.cache.get('680019347569377297');
-					modlog.send('pogger?');
 				}
 				else {
 					return message.channel.send('You don\'t have sufficent permissions.');
