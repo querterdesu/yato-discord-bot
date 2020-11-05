@@ -12,7 +12,7 @@ module.exports = {
 	execute(message, args) {
 		const kickEmbed = new Discord.MessageEmbed()
 			.setColor("#ff8800")
-			.setTitle(`Kicked user ${userTagged}`);
+			.setTitle('Kicked user!');
 		message.channel.send(kickEmbed);
 	},
 };
