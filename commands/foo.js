@@ -13,7 +13,7 @@ module.exports = {
 		const kickEmbed = new Discord.MessageEmbed()
 			.setColor("#ff8800")
 			.setAuthor('Kicked user <user>!', `${message.author.displayAvatarURL({ format: "png", dynamic: true })}`, '')
-			.setThumbnail`${message.author.displayAvatarURL({ format: "png", dynamic: true })}`)
+			.setThumbnail(`${message.author.displayAvatarURL({ format: "png", dynamic: true })}`)
 			.addFields(
 				{ name: 'Reason', value: '<reason>' },
 				{ name: 'Kicked by', value: '<administrator>'},
