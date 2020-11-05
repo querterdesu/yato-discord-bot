@@ -8,10 +8,9 @@ module.exports = {
 	guildOnly: true,
 	cooldown: 5,
 	execute(message, args) {
-		messageUtil.sendSuccess(message, 'Successfully kicked the user!');
-					const kickEmbed = new Discord.MessageEmbed()
-						.setColor("#ff8800")
-						.setTitle(`Kicked user ${userTagged}`);
-		messageUtil.modlog(kickEmbed);
+		const kickEmbed = new Discord.MessageEmbed()
+			.setColor("#ff8800")
+			.setTitle(`Kicked user ${userTagged}`);
+		message.channel.send(kickEmbed);
 	},
 };
