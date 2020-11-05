@@ -100,8 +100,8 @@ client.on('guildMemberRemove', async member => {
 	if (target.id === member.id) {
 		const kickEmbed = new Discord.MessageEmbed()
 			.setColor('#ff8800')
-			.setAuthor('Invoked by <admin>', `${executor.displayAvatarURL({ format: "png", dynamic: true })}`, '')
-			.setTitle(`👢 Kicked user ${target.user.id}`)
+			.setAuthor(`Invoked by ${executor.user.discriminator}`, `${executor.displayAvatarURL({ format: "png", dynamic: true })}`, '')
+			.setTitle(`👢 Kicked user ${target.user.discriminator}`)
 			.setThumbnail(`${target.displayAvatarURL({ format: "png", dynamic: true })}`)
 			.addFields(
 				{ name: 'Reason', value: `${reason}` },
