@@ -22,6 +22,7 @@ module.exports = {
 						messageUtil.sendError(message, 'Could not kick user!');
 					});
 					messageUtil.sendSuccess(message, 'Successfully kicked the user!');
+					messageUtil.modlog(message, 'Kicked user whatever!');
 				}
 				else {
 					return messageUtil.sendError(message, 'You don\'t have sufficent permissions.');
