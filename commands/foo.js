@@ -12,7 +12,11 @@ module.exports = {
 	execute(message, args) {
 		const kickEmbed = new Discord.MessageEmbed()
 			.setColor("#ff8800")
-			.setTitle('Kicked user!');
+			.setTitle('Kicked user <user>!')
+			.addFields(
+				{ name: 'Reason', value: '<reason>' },
+				{ name: 'Kicked by', value: '<administrator>'},
+			);
 		message.channel.send(kickEmbed);
 	},
 };
