@@ -17,7 +17,8 @@ module.exports = {
 			.setThumbnail(`${message.author.displayAvatarURL({ format: "png", dynamic: true })}`)
 			.addFields(
 				{ name: 'Reason', value: '<reason>' },
-			);
+			)
+			.setFooter('AID: <admin id>, VID: <victim id>', '');
 		message.channel.send(kickEmbed);
 	},
 };
