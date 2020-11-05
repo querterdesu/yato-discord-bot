@@ -96,17 +96,17 @@ client.on('guildMemberRemove', async member => {
 	const kickLog = fetchLogs.entries.first();
 	if (!kickLog) return console.log(`${member.user.tag} left the guild. Why?`);
 
-	const { executor, target } = kickLog;
+	const { executor, target, reason } = kickLog;
 	if (target.id === member.id) {
 		const kickEmbed = new Discord.MessageEmbed()
-			.setColor("#ff8800")
-			.setAuthor('Invoked by <admin>', `${message.author.displayAvatarURL({ format: "png", dynamic: true })}`, '')
-			.setTitle('👢 Kicked user <user>')
-			.setThumbnail(`${message.author.displayAvatarURL({ format: "png", dynamic: true })}`)
+			.setColor('#ff8800')
+			.setAuthor('Invoked by <admin>', `${executor.displayAvatarURL({ format: "png", dynamic: true })}`, '')
+			.setTitle(`👢 Kicked user ${target.user.id}`)
+			.setThumbnail(`${target.displayAvatarURL({ format: "png", dynamic: true })}`)
 			.addFields(
-				{ name: 'Reason', value: '<reason>' },
+				{ name: 'Reason', value: `${reason}` },
 			)
-			.setFooter('AID: <admin id>, VID: <victim id>', '');
+			.setFooter(`AID: ${executor}, VID: ${target.id}`, '');
 		messageUtil.modlog(kickEmbed);
 	} else {
 		console.log('Member left.');
