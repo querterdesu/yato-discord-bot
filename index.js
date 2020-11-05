@@ -100,13 +100,13 @@ client.on('guildMemberRemove', async member => {
 	if (target.id === member.id) {
 		const kickEmbed = new Discord.MessageEmbed()
 			.setColor('#ff8800')
-			.setAuthor(`Invoked by ${executor.user.discriminator}`, `${executor.displayAvatarURL({ format: "png", dynamic: true })}`, '')
-			.setTitle(`👢 Kicked user ${target.user.discriminator}`)
+			.setAuthor(`Invoked by ${executor.tag}`, `${executor.displayAvatarURL({ format: "png", dynamic: true })}`, '')
+			.setTitle(`👢 Kicked user ${target.tag}`)
 			.setThumbnail(`${target.displayAvatarURL({ format: "png", dynamic: true })}`)
 			.addFields(
 				{ name: 'Reason', value: `${reason}` },
 			)
-			.setFooter(`AID: ${executor}, VID: ${target.id}`, '');
+			.setFooter(`AID: ${executor.id}, VID: ${target.id}`, '');
 		messageUtil.modlog(kickEmbed);
 	} else {
 		console.log('Member left.');
