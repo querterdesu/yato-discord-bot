@@ -107,7 +107,7 @@ client.on('guildMemberRemove', async member => {
 				{ name: 'Reason', value: `${reason}` },
 			)
 			.setFooter(`AID: ${executor.id}, VID: ${target.id}`, '');
-		messageUtil.modlog(ref, kickEmbed);
+		messageUtil.modlog(member.guild, kickEmbed);
 	} else {
 		console.log('Member left.');
 	}
