@@ -1,3 +1,4 @@
+const { DiscordAPIError } = require('discord.js');
 const messageUtil = require('../messages.js');
 
 module.exports = {
@@ -22,7 +23,10 @@ module.exports = {
 						messageUtil.sendError(message, 'Could not kick user!');
 					});
 					messageUtil.sendSuccess(message, 'Successfully kicked the user!');
-					messageUtil.modlog(message, 'Kicked user whatever!');
+					const kickEmbed = new Discord.MessageEmbed()
+						.setColor("#ff8800")
+						.setTitle(`Kicked user ${userTagged}`);
+					messageUtil.modlog(kickEmbed);
 				}
 				else {
 					return messageUtil.sendError('You don\'t have sufficent permissions.');
