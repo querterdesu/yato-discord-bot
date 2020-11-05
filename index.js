@@ -1,30 +1,31 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const {
-	prefix,
-	token,
-} = require('./config.js');
+const { prefix, token } = require('./config.js');
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
 const messageUtil = require('./messages.js');
+const { modlog } = require('./messages.js');
 
 for (const file of commandFiles) {
 	const cmd = require(`./commands/${file}`);
 	client.commands.set(cmd.name, cmd);
 }
 
-client.once('ready', async () => {
+client.once('ready', () => {
 	console.log('Ready!');
-	client.user.setActivity('phone calls', {
-		type: 'STREAMING',
-		url: 'https://www.twitch.tv/realquerter',
-	});
+	client.user.setActivity('any calls', { type: 'LISTENING' });
 });
 
+const getUserFromMention = (mention) => {
+	const matches = mention.match(/^<@!?(\d+)>$/);
+	if (!matches) return;
+	const id = matches[1];
+	return client.users.cache.get(id);
+};
 
-client.on('message', async msg => {
+client.on('message', msg => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
 	const args = msg.content.slice(prefix.length).trim().split(' ');
@@ -81,9 +82,34 @@ client.on('message', async msg => {
 	try {
 		cmd.execute(msg, args);
 	}
-	catch (error) {
+	catch(error) {
 		console.error(error);
 		messageUtil.sendError(msg, 'There was an error executing that command! \nPlease contact the server administrators.');
+	}
+});
+
+client.on('guildMemberRemove', async member => {
+	const fetchLogs = await member.guild.fetchAuditLogs({
+		limit: 1,
+		type: 'MEMBER_KICK',
+	});
+	const kickLog = fetchLogs.entries.first();
+	if (!kickLog) return console.log(`${member.user.tag} left the guild. Why?`);
+
+	const { executor, target } = kickLog;
+	if (target.id === member.id) {
+		const kickEmbed = new Discord.MessageEmbed()
+			.setColor("#ff8800")
+			.setAuthor('Invoked by <admin>', `${message.author.displayAvatarURL({ format: "png", dynamic: true })}`, '')
+			.setTitle('👢 Kicked user <user>')
+			.setThumbnail(`${message.author.displayAvatarURL({ format: "png", dynamic: true })}`)
+			.addFields(
+				{ name: 'Reason', value: '<reason>' },
+			)
+			.setFooter('AID: <admin id>, VID: <victim id>', '');
+		messageUtil.modlog(kickEmbed);
+	} else {
+		console.log('Member left.');
 	}
 });
 
