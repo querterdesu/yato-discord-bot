@@ -99,7 +99,6 @@ client.on('guildMemberAdd', async member => {
 client.on('guildMemberRemove', async member => {
 	const fetchLogs = await member.guild.fetchAuditLogs({
 		limit: 1,
-		type: 'MEMBER_KICK',
 	});
 	// Send leaveEmbed on user leaving
 	const leaveEmbed = new Discord.MessageEmbed()
