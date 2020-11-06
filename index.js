@@ -190,7 +190,16 @@ client.on('guildBanAdd', async member => {
 		messageUtil.modlog(member.guild, banEmbed);
 	}
 	else {
-		console.log('Member was banned, audit log fetch inconclusive.');
+		const banEmbed = new Discord.MessageEmbed()
+			.setColor('#ff1111')
+			.setAuthor('Invoked by unknown', '', '')
+			.setTitle(`🔨 Banned user ${target.tag}`)
+			.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`)
+			.addFields(
+				{ name: 'Reason', value: 'None' },
+			)
+			.setFooter(`AID: unknown, VID: ${member.user.id}`, '');
+		messageUtil.modlog(member.guild, banEmbed);
 	}
 });
 
