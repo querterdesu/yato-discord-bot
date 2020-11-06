@@ -122,7 +122,7 @@ client.on('guildMemberAdd', async member => {
 	ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
 
 	ctx.beginPath();
-	ctx.quadraticCurveTo(125, 125, 100, 0, Math.PI * 2, true);
+	ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
 	ctx.closePath();
 	ctx.clip();
 
