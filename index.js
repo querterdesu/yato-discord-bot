@@ -6,7 +6,6 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
 const messageUtil = require('./messages.js');
-const { modlog } = require('./messages.js');
 
 for (const file of commandFiles) {
 	const cmd = require(`./commands/${file}`);
@@ -88,28 +87,73 @@ client.on('message', msg => {
 	}
 });
 
+client.on('guildMemberAdd', async member => {
+	const entryEmbed = new Discord.MessageEmbed()
+		.setColor('44ff44')
+		.setTitle(`${member.user.tag} has joined! Hey!`)
+		.setThumbnail(`${member.user.displayAvatarURL({format: 'png', dynamic: true})}`);
+	const entryChannel = member.guild.client.channels.cache.get('680015955967082501');
+	entryChannel.channel.send(entryEmbed);
+});
+
 client.on('guildMemberRemove', async member => {
 	const fetchLogs = await member.guild.fetchAuditLogs({
 		limit: 1,
 		type: 'MEMBER_KICK',
 	});
+	// Send leaveEmbed on user leaving
+	const leaveEmbed = new Discord.MessageEmbed()
+		.setColor('#ff4444')
+		.setTitle(`${member.user.tag} has left us! Goodbye!`)
+		.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`);
+	const leaveChannel = member.guild.client.channels.cache.get('680015955967082501');
+	leaveChannel.channel.send(leaveEmbed);
+	// Check for member leaving being kicked
 	const kickLog = fetchLogs.entries.first();
 	if (!kickLog) return console.log(`${member.user.tag} left the guild. Why?`);
-
 	const { executor, target, reason } = kickLog;
+	// Test for a few basic things
+	if (executor.bot) return;
 	if (target.id === member.id) {
+		// Send kickEmbed
 		const kickEmbed = new Discord.MessageEmbed()
 			.setColor('#ff8800')
-			.setAuthor(`Invoked by ${executor.tag}`, `${executor.displayAvatarURL({ format: "png", dynamic: true })}`, '')
+			.setAuthor(`Invoked by ${executor.tag}`, `${executor.displayAvatarURL({ format: 'png', dynamic: true })}`, '')
 			.setTitle(`👢 Kicked user ${target.tag}`)
-			.setThumbnail(`${target.displayAvatarURL({ format: "png", dynamic: true })}`)
+			.setThumbnail(`${target.displayAvatarURL({ format: 'png', dynamic: true })}`)
 			.addFields(
 				{ name: 'Reason', value: `${reason}` },
 			)
 			.setFooter(`AID: ${executor.id}, VID: ${target.id}`, '');
 		messageUtil.modlog(member.guild, kickEmbed);
 	} else {
+		// Else: log to console user left.
 		console.log('Member left.');
+	}
+});
+
+client.on('guildBanAdd', async member => {
+	const fetchLogs = await member.guild.fetchAuditLogs({ limit: 1, type: 'MEMBER_BAN_ADD' });
+	const banLog = fetchLogs.entries.first();
+
+	if (!banLog) return console.log('User was banned.');
+
+	const { executor, target, reason } = banLog;
+
+	if (target.id === member.id) {
+		const banEmbed = new Discord.MessageEmbed()
+			.setColor('#ff1111')
+			.setAuthor(`Invoked by ${executor.tag}`, `${executor.displayAvatarURL({ format: 'png', dynamic: true })}`, '')
+			.setTitle(`🔨 Banned user ${target.tag}`)
+			.setThumbnail(`${target.displayAvatarURL({ format: 'png', dynamic: true })}`)
+			.addFields(
+				{ name: 'Reason', value: `${reason}` },
+			)
+			.setFooter(`AID: ${executor.id}, VID: ${target.id}`, '');
+		messageUtil.modlog(member.guild, banEmbed);
+	}
+	else {
+		console.log('Member was banned, audit log fetch inconclusive.');
 	}
 });
 
