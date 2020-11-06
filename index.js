@@ -93,7 +93,7 @@ client.on('guildMemberAdd', async member => {
 		.setTitle(`${member.user.tag} has joined! Hey!`)
 		.setThumbnail(`${member.user.displayAvatarURL({format: 'png', dynamic: true})}`);
 	const entryChannel = member.guild.client.channels.cache.get('680015955967082501');
-	entryChannel.channel.send(entryEmbed);
+	entryChannel.send(entryEmbed);
 });
 
 client.on('guildMemberRemove', async member => {
@@ -107,7 +107,7 @@ client.on('guildMemberRemove', async member => {
 		.setTitle(`${member.user.tag} has left us! Goodbye!`)
 		.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`);
 	const leaveChannel = member.guild.client.channels.cache.get('680015955967082501');
-	leaveChannel.channel.send(leaveEmbed);
+	leaveChannel.send(leaveEmbed);
 	// Check for member leaving being kicked
 	const kickLog = fetchLogs.entries.first();
 	if (!kickLog) return console.log(`${member.user.tag} left the guild. Why?`);
