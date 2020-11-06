@@ -6,6 +6,8 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
 const messageUtil = require('./messages.js');
+const Canvas = require('canvas');
+const { setMaxListeners } = require('process');
 
 for (const file of commandFiles) {
 	const cmd = require(`./commands/${file}`);
@@ -87,13 +89,49 @@ client.on('message', msg => {
 	}
 });
 
+const applyText = (canvas, text) => {
+	const ctx = canvas.getContext('2d');
+	let fontSize = 70;
+
+	do {
+		ctx.font = `${fontSize -= 10}px Fabada`;
+	} while (ctx.measureText(text).width > canvas.width - 300);
+
+	return ctx.font;
+}
+
 client.on('guildMemberAdd', async member => {
-	const entryEmbed = new Discord.MessageEmbed()
-		.setColor('44ff44')
-		.setTitle(`${member.user.tag} has joined! Hey!`)
-		.setThumbnail(`${member.user.displayAvatarURL({format: 'png', dynamic: true})}`);
 	const entryChannel = member.guild.client.channels.cache.get('680015955967082501');
-	entryChannel.send(entryEmbed);
+	if (!entryChannel) return;
+
+	const canvas = Canvas.createCanvas(700, 250);
+	const ctx = canvas.getContext('2d');
+
+	const background = await Canvas.loadImage('./background.jpg');
+	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+	ctx.strokeStyle = '#74037b';
+	ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+	ctx.font = '28px Fabada';
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText('Welcome to Ovutem,', canvas.width / 2.5, canvas.height / 3.8);
+
+	ctx.font = applyText(canvas, `${member.displayName}!`);
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 3.8);
+
+	ctx.beginPath();
+	ctx.quadraticCurveTo(125, 125, 100, 0, Math.PI * 2, true);
+	ctx.closePath();
+	ctx.clip();
+
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
+	ctx.drawImage(avatar, 25, 25, 200, 200);
+
+	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.jpg');
+
+	entryChannel.send('', attachment);
 });
 
 client.on('guildMemberRemove', async member => {
