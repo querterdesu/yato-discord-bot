@@ -7,7 +7,6 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const cooldowns = new Discord.Collection();
 const messageUtil = require('./messages.js');
 const Canvas = require('canvas');
-const { setMaxListeners } = require('process');
 
 for (const file of commandFiles) {
 	const cmd = require(`./commands/${file}`);
@@ -16,7 +15,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
-	client.user.setActivity('any calls', { type: 'LISTENING' });
+	client.user.setActivity('448 kbps of methe', { type: 'PLAYING' });
 });
 
 const getUserFromMention = (mention) => {
