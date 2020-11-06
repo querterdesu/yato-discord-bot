@@ -115,11 +115,11 @@ client.on('guildMemberAdd', async member => {
 
 	ctx.font = '28px Fabada';
 	ctx.fillStyle = '#ffffff';
-	ctx.fillText('Welcome to Ovutem,', canvas.width / 2.5, canvas.height / 3.8);
+	ctx.fillText('Welcome to Ovutem,', canvas.width / 2.5, canvas.height / 3.5);
 
 	ctx.font = applyText(canvas, `${member.displayName}!`);
 	ctx.fillStyle = '#ffffff';
-	ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 3.8);
+	ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
 
 	ctx.beginPath();
 	ctx.quadraticCurveTo(125, 125, 100, 0, Math.PI * 2, true);
