@@ -11,6 +11,6 @@ module.exports = {
 	guildOnly: true,
 	permissions: ['MANAGE_SERVER'],
 	execute(message, args) {
-		message.client.emit('guildMemberAdd', message.member);
+		client.emit('guildMemberAdd', message.member);
 	},
 };
