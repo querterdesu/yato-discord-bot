@@ -21,17 +21,17 @@ module.exports = {
 		}
 
 		let stream = null;
-		const streamType = song.url.includes('youtu') ? 'opus' : 'ogg_opus';
+		const streamType = song.includes('youtu') ? 'opus' : 'ogg_opus';
 
 		try {
-			if (song.url.includes('youtube.com') || song.url.includes('youtu.be')) {
+			if (song.includes('youtube.com') || song.includes('youtu.be')) {
 				stream = await ytdldiscord(song.url, { highWaterMark: 20 });
 			}
 		}
 		catch (err) {
 			if (server.queue) {
 				server.queue.songs.shift();
-				play.play(queue.songs[0], message);
+				play.play(server.queue.songs[0], message);
 			}
 			console.error(err);
 			messageUtil.sendError(message, 'An error has occured.');
