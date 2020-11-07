@@ -4,6 +4,8 @@ const play = require('./commands/play.js')
 
 module.exports = {
 	async play(song, message) {
+		const server = message.guild;
+
 		let connection = '';
 		if (message.member.voice.channel) {
 			connection = await message.member.voice.channel.join();
@@ -11,8 +13,6 @@ module.exports = {
 		else {
 			messageUtil.sendError(message, 'You aren\'t in a voice channel!');
 		}
-
-		const queue = message.client.queue.get(message.guild.id);
 
 		if (!song) {
 			connection.channel.leave();
@@ -29,23 +29,23 @@ module.exports = {
 			}
 		}
 		catch (err) {
-			if (queue) {
-				queue.songs.shift();
+			if (server.queue) {
+				server.queue.songs.shift();
 				play.play(queue.songs[0], message);
 			}
 			console.error(err);
 			messageUtil.sendError(message, 'An error has occured.');
 		}
 
-		queue.connection.on('disconnect', () => message.client.queue.delete(message.guild.id));
+		server.queue.connection.on('disconnect', () => message.client.queue.delete(message.guild.id));
 
-		const dispatcher = queue.connection
+		const dispatcher = server.queue.connection
 			.play(stream, { type: streamType })
 			.on('finish', () => {
-				const lastSong = queue.songs.shift();
-				queue.songs.push(lastSong);
-				play.play(queue.songs[0], message);
+				const lastSong = server.queue.songs.shift();
+				server.queue.songs.push(lastSong);
+				play.play(server.queue.songs[0], message);
 			});
-		dispatcher.setVolumeLogarithmic(1);
+		dispatcher.setVolume(1);
 	},
 };
