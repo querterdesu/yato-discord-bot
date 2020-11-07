@@ -25,7 +25,7 @@ module.exports = {
 
 		try {
 			if (song.includes('youtube.com') || song.includes('youtu.be')) {
-				stream = await ytdldiscord(song.url, { highWaterMark: 20 });
+				stream = await ytdldiscord(song, { highWaterMark: 20 });
 			}
 		}
 		catch (err) {
@@ -37,9 +37,9 @@ module.exports = {
 			messageUtil.sendError(message, 'An error has occured.');
 		}
 
-		server.queue.connection.on('disconnect', () => message.client.queue.delete(message.guild.id));
+		connection.on('disconnect', () => message.client.queue.delete(message.guild.id));
 
-		const dispatcher = server.queue.connection
+		const dispatcher = connection
 			.play(stream, { type: streamType })
 			.on('finish', () => {
 				const lastSong = server.queue.songs.shift();
