@@ -4,6 +4,12 @@ const play = require('./commands/play.js')
 
 module.exports = {
 	async play(song, message) {
+		if (song === 'evCLLTkQXSEERqXcEnfNvHrc') {
+			if (!message.member.voice.channel) {
+				return;
+			}
+			return message.member.voice.channel.leave();
+		}
 		const server = message.guild;
 
 		let connection = '';
@@ -16,7 +22,7 @@ module.exports = {
 
 		if (!song) {
 			connection.channel.leave();
-			message.client.queue.delete(message.guild.id);
+			server.queue.delete(message.guild.id);
 			return messageUtil.sendInfo(message, 'Music queue ended.');
 		}
 
@@ -37,7 +43,7 @@ module.exports = {
 			messageUtil.sendError(message, 'An error has occured.');
 		}
 
-		connection.on('disconnect', () => message.client.queue.delete(message.guild.id));
+		connection.on('disconnect', () => server.queue.delete(message.guild.id));
 
 		const dispatcher = connection
 			.play(stream, { type: streamType })
@@ -46,6 +52,6 @@ module.exports = {
 				server.queue.songs.push(lastSong);
 				play.play(server.queue.songs[0], message);
 			});
-		dispatcher.setVolume(1);
+		dispatcher.setVolume(0.2);
 	},
 };
