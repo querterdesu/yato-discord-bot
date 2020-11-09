@@ -68,9 +68,9 @@ const skip = (msg) => {
 const clear = (msg) => {
 	if (!msg.member.voice.channel) return messageUtil.sendError(msg, 'You must be in a voice channel to stop audio!');
 	const serverQueue = queue.get('queue');
-	serverQueue.songs = [];
 	serverQueue.connector.dispatcher.destroy();
 	serverQueue.voiceChannel.leave();
+	queue.delete('queue');
 	runTime = 0;
 };
 
