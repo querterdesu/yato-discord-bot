@@ -6,7 +6,7 @@ const init = async (args, msg) => {
 	const voiceChannel = msg.member.voice.channel;
 	// check if member is in VC
 	if (!voiceChannel) return messageUtil.sendError(msg, 'You aren\'t in a voice channel!');
-
+	console.log('q');
 	const queueConstructor = {
 		connector: null,
 		voiceChannel: voiceChannel,
@@ -15,6 +15,7 @@ const init = async (args, msg) => {
 	};
 	queue.set('queue', queueConstructor);
 
+	console.log('check');
 	let song = '';
 	if (msg.attachments) {
 		song = msg.attachments[0];
@@ -38,10 +39,12 @@ const play = (song, msg) => {
 		queue.delete('queue');
 		return;
 	}
+	console.log('start song');
 	const dispatcher = serverQueue.connector
 		.play(song)
 		.on('finish', () => {
 			serverQueue.songs.shift();
+			console.log('finished song');
 			play(serverQueue.songs[0], msg);
 		})
 		.on('error', err => console.error(err));
@@ -64,4 +67,6 @@ const clear = (msg) => {
 
 exports.init = init;
 exports.play = play;
+exports.skip = skip;
+exports.clear = clear;
 exports.queue = queue;
