@@ -32,6 +32,7 @@ const init = async (args, msg) => {
 
 const play = (song, msg) => {
 	const serverQueue = queue.get('queue');
+	console.log('join')
 	msg.member.voice.channel.join()
 		.catch(err => console.error(err));
 	if (!song) {
