@@ -67,7 +67,7 @@ module.exports = {
 			.play(playing)
 			.on('finish', () => {
 				serverQueue.songs.shift();
-				this.play(guild, serverQueue.songs[0])
+				this.play(guild, serverQueue.songs[0]);
 			})
 			.on('disconnect', () => {
 				serverQueue.songs = [];
