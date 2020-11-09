@@ -3,7 +3,7 @@ const messageUtil = require('./messages.js');
 const queue = new Map();
 
 const init = async (args, msg) => {
-	const voiceChannel = msg.member.voice.channel();
+	const voiceChannel = msg.member.voice.channel;
 	// check if member is in VC
 	if (!voiceChannel) return messageUtil.sendError(msg, 'You aren\'t in a voice channel!');
 
