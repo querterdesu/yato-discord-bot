@@ -28,6 +28,7 @@ const init = async (args, msg) => {
 	}
 	console.log(song);
 	if (queue.songs === []) { play(song, msg); }
+	else { console.log('already found'); }
 };
 
 const play = async (song, msg) => {
