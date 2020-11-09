@@ -48,9 +48,9 @@ const play = async (song, msg) => {
 	const dispatcher = serverQueue.connector
 		.play(song)
 		.on('finish', () => {
+			play(serverQueue.songs[1], msg);
 			serverQueue.songs.shift();
 			console.log('finished song');
-			play(serverQueue.songs[0], msg);
 		})
 		.on('error', err => console.error(err));
 
