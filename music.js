@@ -1,8 +1,10 @@
 const ytdl = require('ytdl-core');
 const messageUtil = require('./messages.js');
 const queue = new Map();
+let runTime = 0;
 
 const init = async (args, msg) => {
+	runTime++;
 	const voiceChannel = msg.member.voice.channel;
 	// check if member is in VC
 	if (!voiceChannel) return messageUtil.sendError(msg, 'You aren\'t in a voice channel!');
@@ -27,7 +29,7 @@ const init = async (args, msg) => {
 		song = args[0];
 	}
 	console.log(song);
-	if (queue.songs === []) { play(song, msg); }
+	if (runTime === 1) { play(song, msg); }
 	else { console.log('already found'); }
 };
 
