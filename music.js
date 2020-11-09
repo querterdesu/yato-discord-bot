@@ -41,6 +41,7 @@ const play = async (song, msg) => {
 	if (!song) {
 		serverQueue.voiceChannel.leave();
 		queue.delete('queue');
+		runTime = 0;
 		return;
 	}
 	console.log('start song');
@@ -58,15 +59,17 @@ const play = async (song, msg) => {
 };
 
 const skip = (msg) => {
-	const serverQueue = queue.get(queue);
+	const serverQueue = queue.get('queue');
 	if (!msg.member.voice.channel) return messageUtil.sendError(msg, 'You must be in a voice channel to skip audio!');
 	serverQueue.connector.dispatcher.end();
 };
 
 const clear = (msg) => {
-	const serverQueue = queue.get(queue);
+	if (!msg.member.voice.channel) return messageUtil.sendError(msg, 'You must be in a voice channel to stop audio!');
+	const serverQueue = queue.get('queue');
 	serverQueue.songs = [];
 	serverQueue.connector.dispatcher.end();
+	runTime = 0;
 };
 
 exports.init = init;
