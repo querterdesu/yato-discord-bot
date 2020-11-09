@@ -70,6 +70,7 @@ const clear = (msg) => {
 	const serverQueue = queue.get('queue');
 	serverQueue.songs = [];
 	serverQueue.connector.dispatcher.destroy();
+	serverQueue.voiceChannel.leave();
 	runTime = 0;
 };
 
