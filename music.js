@@ -1,4 +1,4 @@
-const ytdl = require('ytdl-core-discord');
+const ytdl = require('ytdl-core');
 const messageUtil = require('./messages.js');
 const queue = new Map();
 
