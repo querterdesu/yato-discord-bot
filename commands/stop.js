@@ -7,7 +7,6 @@ module.exports = {
 	args_required: 0,
 	max_args: 0,
 	async execute(message, args) {
-		const serverQueue = musicUtil.equeue.get(message.guild.id);
-		musicUtil.stop(message, serverQueue);
+		musicUtil.clear(message);
 	},
 };

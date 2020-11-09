@@ -1,88 +1,67 @@
-const ytdldiscord = require('ytdl-core-discord');
+const ytdl = require('ytdl-core-discord');
 const messageUtil = require('./messages.js');
-const play = require('./commands/play.js');
 const queue = new Map();
-module.exports = {
-	equeue: queue,
-	async setup(args, message, serverQueue) {
-		const voiceChannel = message.member.voice.channel;
-		let songInfo = 'No song info provided.';
-		const song = {
-			title: null,
-			url: null,
-		};
-		if (args[0].includes('youtu')) {
-			songInfo = await ytdldiscord.getInfo(args[0]);
-			song['title'] = songInfo.title;
-			song['url'] = songInfo.video_url;
-		}
-		else {
-			song['title'] = 'No title provided.';
-			song['url'] = args[0];
-		}
-		if (serverQueue) {
-			serverQueue.songs.push(song);
-			console.log(serverQueue.songs);
-			return messageUtil.sendSuccess(message, `${song.title} has been added to the queue!`);
-		}
-		const queueConstruct = {
-			textChannel: message.channel,
-			voiceChannel: voiceChannel,
-			connection: null,
-			songs: [],
-			volume: 5,
-			playing: true,
-		};
 
-		queue.set(message.guild.id, queueConstruct);
-		queueConstruct.songs.push(song);
+const init = async (args, msg) => {
+	const voiceChannel = msg.member.voice.channel();
+	// check if member is in VC
+	if (!voiceChannel) return messageUtil.sendError(msg, 'You aren\'t in a voice channel!');
 
-		try {
-			const connection = await voiceChannel.join();
-			queueConstruct.connection = connection;
-			this.play(message.guild, queueConstruct.songs[0]);
-		}
-		catch(err) {
-			console.error(err);
-			queue.delete(message.guild.id);
-			return messageUtil.sendError(message, err);
-		}
-	},
-	play(guild, song) {
-		const serverQueue = queue.get(guild.id);
-		if (!song) {
-			serverQueue.voiceChannel.leave();
-			queue.delete(guild.id);
-			return;
-		}
-		let playing = '';
-		if (song.title !== 'No title provided.') {
-			playing = ytdldiscord(song.url);
-		}
-		else {
-			playing = song.url;
-		}
+	const queueConstructor = {
+		connector: null,
+		voiceChannel: voiceChannel,
+		songs: [],
+		volume: 0.5,
+	};
+	queue.set('queue', queueConstructor);
 
-		const dispatcher = serverQueue.connection
-			.play(playing)
-			.on('finish', () => {
-				serverQueue.songs.shift();
-				this.play(guild, serverQueue.songs[0]);
-			})
-			.on('disconnect', () => {
-				serverQueue.songs = [];
-				serverQueue.connection.dispatcher.end();
-			})
-			.on('error', error => console.error(error));
-		dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-		messageUtil.sendInfo(serverQueue.textChannel, `Started playing next song! (${song.title})`);
-	},
-	skip(message, serverQueue) {
-		if (!serverQueue) return messageUtil.sendError(message, 'There is no song to skip!');
-		serverQueue.connection.dispatcher.end();
-	},
-	stop(message, serverQueue) {
-		serverQueue.songs = [];
-		serverQueue.connection.dispatcher.end();
-	},
+	let song = '';
+	if (msg.attachments) {
+		song = msg.attachments[0];
+	}
+	else if (msg.includes('youtu.be') || msg.includes('youtube')) {
+		song = await ytdl(args[0]);
+	}
+	else {
+		song = args[0];
+	}
+
+	play(song, msg);
 };
+
+const play = (song, msg) => {
+	const serverQueue = queue.get('queue');
+	msg.member.voice.channel.join()
+		.catch(err => console.error(err));
+	if (!song) {
+		serverQueue.voiceChannel.leave();
+		queue.delete('queue');
+		return;
+	}
+	const dispatcher = serverQueue.connector
+		.play(song)
+		.on('finish', () => {
+			serverQueue.songs.shift();
+			play(serverQueue.songs[0], msg);
+		})
+		.on('error', err => console.error(err));
+
+	dispatcher.setVolume(serverQueue.volume);
+	messageUtil.sendInfo(msg, 'Started playing next song!');
+};
+
+const skip = (msg) => {
+	const serverQueue = queue.get(queue);
+	if (!msg.member.voice.channel) return messageUtil.sendError(msg, 'You must be in a voice channel to skip audio!');
+	serverQueue.connector.dispatcher.end();
+};
+
+const clear = (msg) => {
+	const serverQueue = queue.get(queue);
+	serverQueue.songs = [];
+	serverQueue.connector.dispatcher.end();
+};
+
+exports.init = init;
+exports.play = play;
+exports.queue = queue;
