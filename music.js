@@ -12,11 +12,12 @@ module.exports = {
 		};
 		if (args[0].includes('youtu')) {
 			songInfo = await ytdldiscord.getInfo(args[1]);
-			song.title = songInfo.title;
-			song.url = songInfo.video_url;
-		} else {
-			song.title = 'No title provided.';
-			song.url = args[0];
+			song['title'] = songInfo.title;
+			song['url'] = songInfo.video_url;
+		}
+		else {
+			song['title'] = 'No title provided.';
+			song['url'] = args[0];
 		}
 		if (serverQueue) {
 			serverQueue.songs.push(song);
