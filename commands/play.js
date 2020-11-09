@@ -8,7 +8,7 @@ module.exports = {
 	max_args: 1,
 	args_fail_message: 'You didn\'t provide a file/link to play audio from!',
 	async execute(message, args) {
-		const serverQueue = musicUtil.queue.get(message.guild.id);
+		const serverQueue = musicUtil.equeue.get(message.guild.id);
 		musicUtil.setup(args, message, serverQueue);
 	},
 };

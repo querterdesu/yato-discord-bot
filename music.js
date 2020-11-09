@@ -3,9 +3,10 @@ const messageUtil = require('./messages.js');
 const play = require('./commands/play.js');
 const queue = new Map();
 module.exports = {
+	equeue: queue,
 	async setup(args, message, serverQueue) {
 		const voiceChannel = message.member.voice.channel;
-		let songInfo = 'No song info provided.'
+		let songInfo = 'No song info provided.';
 		const song = {
 			title: null,
 			url: null,
