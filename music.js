@@ -30,7 +30,7 @@ const init = async (args, msg) => {
 	else {
 		song = args[0];
 	}
-	queue.songs.push(song);
+	queue.songs += (song);
 	console.log(song);
 	if (runTime === 1) { play(song, msg); }
 	else { console.log('already found'); }
