@@ -8,16 +8,16 @@ const init = async (args, msg) => {
 	const voiceChannel = msg.member.voice.channel;
 	// check if member is in VC
 	if (!voiceChannel) return messageUtil.sendError(msg, 'You aren\'t in a voice channel!');
+	const connector = await voiceChannel.join()
+		.catch(err => console.error(err));
 	console.log('q');
 	const queueConstructor = {
-		connector: null,
+		connector: connector,
 		voiceChannel: voiceChannel,
 		songs: [],
 		volume: 0.5,
 	};
 	queue.set('queue', queueConstructor);
-	queue.connector = await voiceChannel.join()
-		.catch(err => console.error(err));
 
 	console.log('check');
 	let song = '';
