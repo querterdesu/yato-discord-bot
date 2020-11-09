@@ -62,7 +62,7 @@ const skip = (msg) => {
 	const serverQueue = queue.get('queue');
 	if (!msg.member.voice.channel) return messageUtil.sendError(msg, 'You must be in a voice channel to skip audio!');
 	console.log(serverQueue.connector.dispatcher);
-	
+	serverQueue.connector.dispatcher.destroy();
 };
 
 const clear = (msg) => {
