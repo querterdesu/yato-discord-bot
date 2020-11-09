@@ -1,58 +1,86 @@
 const ytdldiscord = require('ytdl-core-discord');
 const messageUtil = require('./messages.js');
-const play = require('./commands/play.js')
-const queue = new Map();
-
+const play = require('./commands/play.js');
 module.exports = {
-	async play(song, message) {
-		if (song === 'evCLLTkQXSEERqXcEnfNvHrc') {
-			if (!message.member.voice.channel) {
-				return;
-			}
-			return message.member.voice.channel.leave();
+	queue: new Map(),
+	async setup(args, message, serverQueue) {
+		const voiceChannel = message.member.voice.channel;
+		let songInfo = 'No song info provided.'
+		const song = {
+			title: null,
+			url: null,
+		};
+		if (args[0].contains('youtu')) {
+			songInfo = await ytdldiscord.getInfo(args[1]);
+			song.title = songInfo.title;
+			song.url = songInfo.video_url;
+		} else {
+			song.title = 'No title provided.';
+			song.url = args[0];
 		}
-		const server = message.guild;
+		if (serverQueue) {
+			serverQueue.songs.push(song);
+			console.log(serverQueue.songs);
+			return messageUtil.sendSuccess(message, `${song.title} has been added to the queue!`);
+		}
+		const queueConstruct = {
+			textChannel: message.channel,
+			voiceChannel: voiceChannel,
+			connection: null,
+			songs: [],
+			volume: 5,
+			playing: true,
+		};
 
-		let connection = '';
-		if (message.member.voice.channel) {
-			connection = await message.member.voice.channel.join();
-		}
-		else {
-			messageUtil.sendError(message, 'You aren\'t in a voice channel!');
-		}
-
-		if (!song) {
-			connection.channel.leave();
-			queue.delete(message.guild.id);
-			return messageUtil.sendInfo(message, 'Music queue ended.');
-		}
-
-		let stream = null;
-		const streamType = song.includes('youtu') ? 'opus' : 'ogg_opus';
+		queue.set(message.guild.id, queueConstruct);
+		queueConstruct.songs.push(song);
 
 		try {
-			if (song.includes('youtube.com') || song.includes('youtu.be')) {
-				stream = await ytdldiscord(song, { highWaterMark: 20 });
-			}
+			const connection = await voiceChannel.join();
+			queueConstruct.connection = connection;
+			play(message.guild, queueConstruct.songs[0]);
 		}
-		catch (err) {
-			if (queue) {
-				queue.songs.shift();
-				play.play(queue.songs[0], message);
-			}
+		catch(err) {
 			console.error(err);
-			messageUtil.sendError(message, 'An error has occured.');
+			queue.delete(message.guild.id);
+			return messageUtil.sendError(message, err);
+		}
+	},
+	play(guild, song) {
+		const serverQueue = queue.get(guild.id);
+		if (!song) {
+			serverQueue.voiceChannel.leave();
+			queue.delete(guild.id);
+			return;
+		}
+		let playing = '';
+		if (song.title !== 'No title provided.') {
+			playing = ytdldiscord(song.url);
+		}
+		else {
+			playing = song.url;
 		}
 
-		connection.on('disconnect', () => queue.delete(message.guild.id));
-
-		const dispatcher = connection
-			.play(stream, { type: streamType })
+		const dispatcher = serverQueue.connection
+			.play(playing)
 			.on('finish', () => {
-				const lastSong = queue.songs.shift();
-				queue.songs.push(lastSong);
-				play.play(queue.songs[0], message);
-			});
-		dispatcher.setVolume(0.2);
+				serverQueue.songs.shift();
+				play(guild, serverQueue.songs[0])
+			})
+			.on('disconnect', () => {
+				serverQueue.songs = [];
+				serverQueue.connection.dispatcher.end();
+			})
+			.on('error', error => console.error(error));
+		dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+		messageUtil.sendInfo(serverQueue.textChannel, `Started playing next song! (${song.title})`);
+	},
+	skip(message, serverQueue) {
+		if (!serverQueue) return messageUtil.sendError(message, 'There is no song to skip!');
+		serverQueue.connection.dispatcher.end();
+	},
+	stop(message, serverQueue) {
+		serverQueue.songs = [];
+		serverQueue.connection.dispatcher.end();
 	},
 };

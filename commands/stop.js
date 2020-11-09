@@ -1,13 +1,13 @@
 const musicUtil = require('../music.js');
 
 module.exports = {
-	name: 'skip',
-	description: 'Skip audio with the command!',
+	name: 'stop',
+	description: 'Stop audio with the command!',
 	guildOnly: true,
 	args_required: 0,
 	max_args: 0,
 	async execute(message, args) {
 		const serverQueue = musicUtil.queue.get(message.guild.id);
-		musicUtil.skip(message, serverQueue);
+		musicUtil.stop(message, serverQueue);
 	},
 };
