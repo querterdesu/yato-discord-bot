@@ -11,7 +11,7 @@ module.exports = {
 			url: null,
 		};
 		if (args[0].includes('youtu')) {
-			songInfo = await ytdldiscord.getInfo(args[1]);
+			songInfo = await ytdldiscord.getInfo(args[0]);
 			song['title'] = songInfo.title;
 			song['url'] = songInfo.video_url;
 		}
