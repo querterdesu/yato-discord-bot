@@ -1,8 +1,8 @@
 const ytdldiscord = require('ytdl-core-discord');
 const messageUtil = require('./messages.js');
 const play = require('./commands/play.js');
+const queue = new Map();
 module.exports = {
-	queue: new Map(),
 	async setup(args, message, serverQueue) {
 		const voiceChannel = message.member.voice.channel;
 		let songInfo = 'No song info provided.'
@@ -33,7 +33,7 @@ module.exports = {
 			playing: true,
 		};
 
-		serverQueue.set(message.guild.id, queueConstruct);
+		queue.set(message.guild.id, queueConstruct);
 		queueConstruct.songs.push(song);
 
 		try {
