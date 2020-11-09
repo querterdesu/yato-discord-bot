@@ -16,7 +16,7 @@ const init = async (args, msg) => {
 		volume: 0.5,
 	};
 	queue.set('queue', queueConstructor);
-	queue.connector = await queue.voiceChannel.join()
+	queue.connector = await voiceChannel.join()
 		.catch(err => console.error(err));
 
 	console.log('check');
