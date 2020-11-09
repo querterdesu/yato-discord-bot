@@ -20,7 +20,7 @@ const init = async (args, msg) => {
 	if (msg.attachments && args[0] === 'file') {
 		song = msg.attachments[0];
 	}
-	else if (msg.includes('youtu.be') || msg.includes('youtube')) {
+	else if (args[0].includes('youtu.be') || args[0].includes('youtube')) {
 		song = await ytdl(args[0]);
 	}
 	else {
