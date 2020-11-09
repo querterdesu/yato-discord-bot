@@ -1,6 +1,7 @@
 const ytdldiscord = require('ytdl-core-discord');
 const messageUtil = require('./messages.js');
 const play = require('./commands/play.js')
+const queue = new Map();
 
 module.exports = {
 	async play(song, message) {
@@ -22,7 +23,7 @@ module.exports = {
 
 		if (!song) {
 			connection.channel.leave();
-			server.queue.delete(message.guild.id);
+			queue.delete(message.guild.id);
 			return messageUtil.sendInfo(message, 'Music queue ended.');
 		}
 
@@ -35,22 +36,22 @@ module.exports = {
 			}
 		}
 		catch (err) {
-			if (server.queue) {
-				server.queue.songs.shift();
-				play.play(server.queue.songs[0], message);
+			if (queue) {
+				queue.songs.shift();
+				play.play(queue.songs[0], message);
 			}
 			console.error(err);
 			messageUtil.sendError(message, 'An error has occured.');
 		}
 
-		connection.on('disconnect', () => server.queue.delete(message.guild.id));
+		connection.on('disconnect', () => queue.delete(message.guild.id));
 
 		const dispatcher = connection
 			.play(stream, { type: streamType })
 			.on('finish', () => {
-				const lastSong = server.queue.songs.shift();
-				server.queue.songs.push(lastSong);
-				play.play(server.queue.songs[0], message);
+				const lastSong = queue.songs.shift();
+				queue.songs.push(lastSong);
+				play.play(queue.songs[0], message);
 			});
 		dispatcher.setVolume(0.2);
 	},
