@@ -16,6 +16,8 @@ const init = async (args, msg) => {
 		volume: 0.5,
 	};
 	queue.set('queue', queueConstructor);
+	queue.connector = await queue.voiceChannel.join()
+		.catch(err => console.error(err));
 
 	console.log('check');
 	let song = '';
@@ -36,8 +38,6 @@ const init = async (args, msg) => {
 const play = async (song, msg) => {
 	const serverQueue = queue.get('queue');
 	console.log('join')
-	serverQueue.connector = await serverQueue.voiceChannel.join()
-		.catch(err => console.error(err));
 	if (!song) {
 		serverQueue.voiceChannel.leave();
 		queue.delete('queue');
@@ -62,7 +62,7 @@ const skip = (msg) => {
 	const serverQueue = queue.get('queue');
 	if (!msg.member.voice.channel) return messageUtil.sendError(msg, 'You must be in a voice channel to skip audio!');
 	console.log(serverQueue.connector.dispatcher);
-	serverQueue.connector.dispatcher.destroy();
+	
 };
 
 const clear = (msg) => {
