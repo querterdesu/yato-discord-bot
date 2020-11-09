@@ -26,7 +26,7 @@ const init = async (args, msg) => {
 	else {
 		song = args[0];
 	}
-
+	console.log(song);
 	play(song, msg);
 };
 
