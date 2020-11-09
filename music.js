@@ -30,10 +30,10 @@ const init = async (args, msg) => {
 	play(song, msg);
 };
 
-const play = (song, msg) => {
+const play = async (song, msg) => {
 	const serverQueue = queue.get('queue');
 	console.log('join')
-	serverQueue.connector = msg.member.voice.channel.join()
+	serverQueue.connector = await serverQueue.voiceChannel.join()
 		.catch(err => console.error(err));
 	if (!song) {
 		serverQueue.voiceChannel.leave();
