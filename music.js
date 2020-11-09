@@ -40,7 +40,7 @@ module.exports = {
 		try {
 			const connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
-			play(message.guild, queueConstruct.songs[0]);
+			this.play(message.guild, queueConstruct.songs[0]);
 		}
 		catch(err) {
 			console.error(err);
@@ -67,7 +67,7 @@ module.exports = {
 			.play(playing)
 			.on('finish', () => {
 				serverQueue.songs.shift();
-				play(guild, serverQueue.songs[0])
+				this.play(guild, serverQueue.songs[0])
 			})
 			.on('disconnect', () => {
 				serverQueue.songs = [];
