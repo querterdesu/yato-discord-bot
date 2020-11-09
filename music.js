@@ -33,7 +33,7 @@ module.exports = {
 			playing: true,
 		};
 
-		queue.set(message.guild.id, queueConstruct);
+		serverQueue.set(message.guild.id, queueConstruct);
 		queueConstruct.songs.push(song);
 
 		try {
