@@ -21,7 +21,7 @@ const init = async (args, msg) => {
 		song = msg.attachments[0];
 	}
 	else if (args[0].includes('youtu.be') || args[0].includes('youtube')) {
-		song = await ytdl(args[0]);
+		song = await ytdl(args[0], { filter: 'audioonly' });
 	}
 	else {
 		song = args[0];
