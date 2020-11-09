@@ -27,7 +27,7 @@ const init = async (args, msg) => {
 		song = args[0];
 	}
 	console.log(song);
-	play(song, msg);
+	if (queue.songs == false) play(song, msg);
 };
 
 const play = async (song, msg) => {
