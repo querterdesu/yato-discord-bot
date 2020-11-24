@@ -1,4 +1,3 @@
-const { DiscordAPIError } = require('discord.js');
 const messageUtil = require('../messages.js');
 
 module.exports = {
