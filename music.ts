@@ -1,5 +1,5 @@
 const ytdl = require('ytdl-core');
-const messageUtil = require('./messages.js');
+const messageUtil = require('./messages.ts');
 const queue = new Map();
 let runTime = 0;
 
@@ -18,7 +18,7 @@ const init = async (args, msg) => {
 		volume: 0.5,
 	};
 	queue.set('queue', queueConstructor);
-
+	const serverQueue = queue.get('queue');
 	console.log('check');
 	let song = '';
 	if (msg.attachments && args[0] === 'file') {
@@ -30,7 +30,7 @@ const init = async (args, msg) => {
 	else {
 		song = args[0];
 	}
-	queue.songs += (song);
+	serverQueue.songs += (song);
 	console.log(song);
 	if (runTime === 1) { play(song, msg); }
 	else { console.log('already found'); }
