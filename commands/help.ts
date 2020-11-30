@@ -1,5 +1,5 @@
-const { prefix } = require ('../config.js');
-const messageUtil = require('../messages.js');
+const { prefix } = require ('../config.ts');
+const messageUtil = require('../messages.ts');
 
 module.exports = {
 	name: 'help',

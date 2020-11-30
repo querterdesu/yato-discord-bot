@@ -1,4 +1,4 @@
-const messageUtil = require('../messages.js');
+const messageUtil = require('../messages.ts');
 
 module.exports = {
 	name: 'clear',

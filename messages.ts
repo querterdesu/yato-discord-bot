@@ -8,6 +8,9 @@ module.exports = {
 	sendInfo(ref, message) {
 		return ref.channel.send(`❕ | ${message}`);
 	},
+	sendWarning(ref, message) {
+		return ref.channel.send(`⚠️ | ${message}`);
+	},
 	confirmPrompt(ref, waitingTime) {
 		ref.react('✅').then(() => { ref.react('❌'); });
 

@@ -1,4 +1,4 @@
-const musicUtil = require('../music.js');
+const musicUtil = require('../music.ts');
 
 module.exports = {
 	name: 'skip',
