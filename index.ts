@@ -28,7 +28,7 @@ const getUserFromMention = (mention) => {
 client.on('message', msg => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
-	const args: Array<string> = msg.content.slice(prefix.length).trim().split(' ');
+	const args = msg.content.slice(prefix.length).trim().split(' ');
 	const cmdName = args.shift().toLowerCase();
 
 
