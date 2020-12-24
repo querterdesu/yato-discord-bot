@@ -1,17 +1,17 @@
 module.exports = {
-	sendSuccess(ref: any, message: string): Message {
+	sendSuccess(ref, message) {
 		return ref.channel.send(`✅ | ${message}`);
 	},
-	sendError(ref: any, message: string): Message {
+	sendError(ref, message) {
 		return ref.channel.send(`❌ | ${message}`);
 	},
-	sendInfo(ref: any, message: string): Message {
+	sendInfo(ref, message) {
 		return ref.channel.send(`❕ | ${message}`);
 	},
-	sendWarning(ref: any, message: string): Message {
+	sendWarning(ref, message) {
 		return ref.channel.send(`⚠️ | ${message}`);
 	},
-	confirmPrompt(ref: any, waitingTime: number): number {
+	confirmPrompt(ref, waitingTime) {
 		ref.react('✅').then(() => { ref.react('❌'); });
 
 		const filter = (reaction, user) => {
@@ -31,7 +31,7 @@ module.exports = {
 		}).catch(collected => { console.error(`User did not react. ${collected}`); return -1; });
 		return -1;
 	},
-	modlog(ref, message: string): void {
+	modlog(ref, message) {
 		const modlog = ref.client.channels.cache.get('680019347569377297');
 		modlog.send(message);
 	},
