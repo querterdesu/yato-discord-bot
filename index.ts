@@ -32,7 +32,7 @@ client.on('message', msg => {
 	const cmdName = args.shift().toLowerCase();
 
 
-	const cmd: any = client.commands.get(cmdName) || client.commands.find(command => command.aliases && command.aliases.includes(cmdName));
+	const cmd = client.commands.get(cmdName) || client.commands.find(command => command.aliases && command.aliases.includes(cmdName));
 
 	if (!cmd) return;
 
