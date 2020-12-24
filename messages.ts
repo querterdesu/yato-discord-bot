@@ -1,5 +1,3 @@
-import { Guild, GuildMember, Message } from "discord.js";
-
 module.exports = {
 	sendSuccess(ref: any, message: string): Message {
 		return ref.channel.send(`✅ | ${message}`);
