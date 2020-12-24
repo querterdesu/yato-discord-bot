@@ -1,4 +1,5 @@
 const fs = require('fs');
+const messageUtil = require('../messages.ts');
 
 module.exports = {
     name: 'warn',
@@ -23,6 +24,7 @@ module.exports = {
                     let data = JSON.parse( fs.readFileSync('../warnings.json') );
                     data.warnings.push(warning);
                     fs.writeFileSync('../warnings.json', JSON.stringify(data, null, 2));
+                    messageUtil.sendSuccess(msg, 'Successfully warned the user!');
                 }
             }
         }
