@@ -145,26 +145,27 @@ client.on('guildMemberRemove', async member => {
 	const leaveChannel = member.guild.client.channels.cache.get('680015955967082501');
 	leaveChannel.send(leaveEmbed);
 	// Check for member leaving being kicked
-	const kickLog = fetchLogs.entries.first();
-	if (!kickLog || kickLog.action !== 'MEMBER_KICK') return console.log(`${member.user.tag} left the guild. Why?`);
-	const { executor, target, reason } = kickLog;
-	// Test for a few basic things
-	if (executor.bot) return;
-	if (target.id === member.id) {
-		// Send kickEmbed
-		const kickEmbed = new Discord.MessageEmbed()
-			.setColor('#ff8800')
-			.setAuthor(`Invoked by ${executor.tag}`, `${executor.displayAvatarURL({ format: 'png', dynamic: true })}`, '')
-			.setTitle(`👢 Kicked user ${target.tag}`)
-			.setThumbnail(`${target.displayAvatarURL({ format: 'png', dynamic: true })}`)
-			.addFields(
-				{ name: 'Reason', value: `${reason}` },
-			)
-			.setFooter(`AID: ${executor.id}, VID: ${target.id}`, '');
-		messageUtil.modlog(member.guild, kickEmbed);
-	} else {
-		// Else: log to console user left.
-		console.log('Member left.');
+	const recentLog = fetchLogs.entries.first();
+	if (recentLog.action === 'MEMBER_KICK') {
+		const { executor, target, reason } = recentLog;
+		// Test for a few basic things
+		if (executor.bot) return;
+		if (target.id === member.id) {
+			// Send kickEmbed
+			const kickEmbed = new Discord.MessageEmbed()
+				.setColor('#ff8800')
+				.setAuthor(`Invoked by ${executor.tag}`, `${executor.displayAvatarURL({ format: 'png', dynamic: true })}`, '')
+				.setTitle(`👢 Kicked user ${target.tag}`)
+				.setThumbnail(`${target.displayAvatarURL({ format: 'png', dynamic: true })}`)
+				.addFields(
+					{ name: 'Reason', value: `${reason}` },
+				)
+				.setFooter(`AID: ${executor.id}, VID: ${target.id}`, '');
+			messageUtil.modlog(member.guild, kickEmbed);
+		} else {
+			// Else: log to console user left.
+			console.log('Member left.');
+		}
 	}
 });
 
