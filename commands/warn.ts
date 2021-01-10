@@ -10,7 +10,7 @@ module.exports = {
     guildOnly: true,
     cooldown: 0,
     permissions: ['MANAGE_MESSAGES'],
-    execute(msg, args) {
+    execute(msg, args, self) {
         const userTagged = msg.mentions.users.first();
         const reason = args.slice(1, -1).join(' ');
         if (userTagged) {

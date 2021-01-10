@@ -10,7 +10,7 @@ module.exports = {
 	cooldown: 3,
 	guildOnly: true,
 	permissions: ['MANAGE_SERVER'],
-	execute(message, args) {
+	execute(message, args, self) {
 		message.client.emit(args[0], message.member);
 	},
 };

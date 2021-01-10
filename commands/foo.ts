@@ -9,7 +9,7 @@ module.exports = {
 	usage: '',
 	guildOnly: true,
 	cooldown: 5,
-	execute(message, args) {
+	execute(message, args, self) {
 		const kickEmbed = new Discord.MessageEmbed()
 			.setColor("#ff8800")
 			.setAuthor('Invoked by <admin>', `${message.author.displayAvatarURL({ format: "png", dynamic: true })}`, '')

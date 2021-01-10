@@ -10,7 +10,7 @@ module.exports = {
 	guildOnly: true,
 	cooldown: 5,
 	permissions: ['MANAGE_MESSAGES'],
-	async execute(message, args) {
+	async execute(message, args, self) {
 		const amount = parseInt(args[0]) + 1;
 		if (isNaN(amount)) {
 			return messageUtil.sendError(message, 'The argument you provided isn\'t a number.');

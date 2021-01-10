@@ -9,7 +9,7 @@ module.exports = {
 	guildOnly: true,
 	cooldown: 0,
 	permissions: ['MANAGE_MESSAGES'],
-	execute(message, args) {
+	execute(message, args, self) {
         const userTagged = message.mentions.users.first();
         const duration = args[1];
         const reason = args.slice(2).join(' ');
@@ -17,6 +17,7 @@ module.exports = {
         const memberTagged = message.guild.member(userTagged);
         if (!memberTagged) messageUtil.sendError('The user exists, but isn\'t in this server!');
         memberTagged.roles.add(message.guild.roles.cache.find(role => role.id === '687419099109916716'))
+        self.emit('muteMember', memberTagged, duration, reason)
         setTimeout(() => {
             memberTagged.roles.remove(message.guild.roles.cache.find(role => role.id === '687419099109916716'));
         }, parseInt(duration) * 60000);

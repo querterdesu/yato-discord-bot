@@ -8,7 +8,7 @@ module.exports = {
 	max_args: 1,
 	args_fail_message: 'You didn\'t provide a command to reload!',
 	cooldown: 5,
-	execute(message, args) {
+	execute(message, args, self) {
 		const commandName = args[0].toLowerCase();
 		const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 

@@ -80,7 +80,7 @@ client.on('message', msg => {
 	setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
 
 	try {
-		cmd.execute(msg, args);
+		cmd.execute(msg, args, client);
 	}
 	catch(error) {
 		console.error(error);
@@ -201,6 +201,19 @@ client.on('guildBanAdd', async member => {
 			.setFooter(`AID: unknown, VID: ${member.user.id}`, '');
 		messageUtil.modlog(member.guild, banEmbed);
 	}
+});
+
+client.on('muteMember', async (member, duration, reason) => {
+	const banEmbed = new Discord.MessageEmbed()
+			.setColor('#ff1111')
+			.setAuthor('Invoked by unknown', '', '')
+			.setTitle(`🔨 Muted user ${member.tag} for ${duration} minutes`)
+			.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`)
+			.addFields(
+				{ name: 'Reason', value: `${reason}` },
+			)
+			.setFooter(`AID: none, VID: ${member.user.id}`, '');
+	messageUtil.modlog(member.guild, banEmbed);
 });
 
 client.login(token);

@@ -7,7 +7,7 @@ module.exports = {
 	args_required: 1,
 	max_args: 1,
 	args_fail_message: 'You didn\'t provide a file/link to play audio from!',
-	async execute(message, args) {
+	async execute(message, args, self) {
 		console.log(args[0]);
 		musicUtil.init(args, message);
 	},

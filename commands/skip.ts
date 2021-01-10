@@ -6,7 +6,7 @@ module.exports = {
 	guildOnly: true,
 	args_required: 0,
 	max_args: 0,
-	async execute(message, args) {
+	async execute(message, args, self) {
 		musicUtil.skip(message);
 	},
 };

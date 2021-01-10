@@ -9,7 +9,7 @@ module.exports = {
 	args_required: 0,
 	max_args: 1,
 	cooldown: 1,
-	execute(message, args) {
+	execute(message, args, self) {
 		const data = [];
 		const { commands } = message.client;
 

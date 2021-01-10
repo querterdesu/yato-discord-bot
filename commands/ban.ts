@@ -9,7 +9,7 @@ module.exports = {
 	guildOnly: true,
 	cooldown: 0,
 	permissions: ['BAN_MEMBERS'],
-	execute(message, args) {
+	execute(message, args, self) {
 		const userTagged = message.mentions.users.first();
 		const misc = args.shift;
 		const reason = args.join(' ');
