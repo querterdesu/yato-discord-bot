@@ -146,7 +146,7 @@ client.on('guildMemberRemove', async member => {
 	leaveChannel.send(leaveEmbed);
 	// Check for member leaving being kicked
 	const kickLog = fetchLogs.entries.first();
-	if (!kickLog) return console.log(`${member.user.tag} left the guild. Why?`);
+	if (!kickLog || kickLog.action !== 'MEMBER_KICK') return console.log(`${member.user.tag} left the guild. Why?`);
 	const { executor, target, reason } = kickLog;
 	// Test for a few basic things
 	if (executor.bot) return;
