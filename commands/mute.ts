@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Mutes the specified user.',
 	args_required: 1,
 	max_args: 999,
-	usage: '<user to kick> <duration> <reason>',
+	usage: '<user to mute> <duration> <reason>',
 	guildOnly: true,
 	cooldown: 0,
 	permissions: ['MANAGE_MESSAGES'],
@@ -17,9 +17,12 @@ module.exports = {
         const memberTagged = message.guild.member(userTagged);
         if (!memberTagged) messageUtil.sendError('The user exists, but isn\'t in this server!');
         memberTagged.roles.add(message.guild.roles.cache.find(role => role.id === '687419099109916716'))
-        self.emit('muteMember', memberTagged, duration, reason)
+        self.emit('muteMember', message.member, memberTagged, duration, reason)
         setTimeout(() => {
-            memberTagged.roles.remove(message.guild.roles.cache.find(role => role.id === '687419099109916716'));
+            if (memberTagged.roles.cache.find(role => role.id === '687419099109916716')) {
+                memberTagged.roles.remove(message.guild.roles.cache.find(role => role.id === '687419099109916716'));
+                self.emit('unmuteMember', message.member, memberTagged, reason)
+            }
         }, parseInt(duration) * 60000);
 	},
 };
