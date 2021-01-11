@@ -206,8 +206,8 @@ client.on('guildBanAdd', async member => {
 client.on('muteMember', async (muter, member, duration, reason) => {
 	const muteEmbed = new Discord.MessageEmbed()
 		.setColor('#A1CFCF')
-		.setAuthor(`Invoked by ${muter.tag}`, '', '')
-		.setTitle(`🔇 Muted user ${member.tag}`)
+		.setAuthor(`Invoked by ${muter.user.tag}`, '', '')
+		.setTitle(`🔇 Muted user ${member.user.tag}`)
 		.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`)
 		.addFields(
 			{ name: 'Reason', value: `${reason}` },
@@ -220,14 +220,16 @@ client.on('muteMember', async (muter, member, duration, reason) => {
 client.on('unmuteMember', async (unmuter, member, reason) => {
 	const unmuteEmbed = new Discord.MessageEmbed()
 		.setColor('#48FF88')
-		.setAuthor(`Invoked by ${unmuter.tag}`, '', '')
-		.setTitle(`🔈 Unmuted user ${member.tag}`)
+		.setAuthor(`Invoked by ${unmuter.user.tag}`, '', '')
+		.setTitle(`🔈 Unmuted user ${member.user.tag}`)
 		.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`)
 		.addFields(
 			{ name: 'Reason', value: `${reason}` },
 		)
 		.setFooter(`AID: ${unmuter.user.id}, VID: ${member.user.id}`, '');
 	messageUtil.modlog(member.guild, unmuteEmbed)
-})
+});
+
+
 
 client.login(token);

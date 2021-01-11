@@ -15,7 +15,7 @@ module.exports = {
         if (!userTagged) messageUtil.sendError('Could not retrieve user from message!');
         const memberTagged = message.guild.member(userTagged);
         if (!memberTagged) messageUtil.sendError('The user exists, but isn\'t in this server!');
-        memberTagged.roles.remove(message.guild.roles.cache.find(role => role.id === '687419099109916716'))
-        self.emit('unmuteMember', message.member, memberTagged, reason)
+        memberTagged.roles.remove(message.guild.roles.cache.find(role => role.id === '687419099109916716'));
+        self.emit('unmuteMember', message.member, memberTagged, reason);
 	},
 };
