@@ -35,4 +35,21 @@ module.exports = {
 		const modlog = ref.client.channels.cache.get('680019347569377297');
 		modlog.send(message);
 	},
+	verifyTime(time_string) {
+		if (time_string == 's') {
+			return 1;
+		} else if (time_string == 'm') {
+			return 60;
+		} else if (time_string == 'h') {
+			return 3600;
+		} else if (time_string == 'd') {
+			return 3600 * 24;
+		} else if (time_string == 'w') {
+			return 3600 * 24 * 7;
+		} else if (time_string == 'mo') {
+			return 3600 * 24 * 30;
+		} else if (time_string == 'y') {
+			return 3600 * 24 * 365;
+		}
+	}
 };
