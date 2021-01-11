@@ -205,15 +205,15 @@ client.on('guildBanAdd', async member => {
 
 client.on('muteMember', async (muter, member, duration, reason) => {
 	const muteEmbed = new Discord.MessageEmbed()
-			.setColor('#A1CFCF')
-			.setAuthor(`Invoked by ${muter.tag}`, '', '')
-			.setTitle(`🔇 Muted user ${member.tag}`)
-			.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`)
-			.addFields(
-				{ name: 'Reason', value: `${reason}` },
-				{ name: 'Duration', value: `${duration} minutes` }
-			)
-			.setFooter(`AID: ${muter.user.id}, VID: ${member.user.id}`, '');
+		.setColor('#A1CFCF')
+		.setAuthor(`Invoked by ${muter.tag}`, '', '')
+		.setTitle(`🔇 Muted user ${member.tag}`)
+		.setThumbnail(`${member.user.displayAvatarURL({ format: 'png', dynamic: true })}`)
+		.addFields(
+			{ name: 'Reason', value: `${reason}` },
+			{ name: 'Duration', value: `${duration} minutes` },
+		)
+		.setFooter(`AID: ${muter.user.id}, VID: ${member.user.id}`, '');
 	messageUtil.modlog(member.guild, muteEmbed);
 });
 
