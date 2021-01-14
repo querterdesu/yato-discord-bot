@@ -18,12 +18,7 @@ client.once('ready', () => {
 	client.user.setActivity('448 kbps of methe', { type: 'PLAYING' });
 });
 
-const getUserFromMention = (mention) => {
-	const matches = mention.match(/^<@!?(\d+)>$/);
-	if (!matches) return;
-	const id = matches[1];
-	return client.users.cache.get(id);
-};
+
 
 client.on('message', msg => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return;

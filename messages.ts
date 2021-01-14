@@ -51,5 +51,11 @@ module.exports = {
 		} else if (time_string == 'y') {
 			return 3600 * 24 * 365;
 		}
+	},
+	getUserFromMention(self, mention) {
+		const matches = mention.match(/^<@!?(\d+)>$/);
+		if (!matches) return;
+		const id = matches[0];
+		return self.users.cache.get(id);
 	}
 };

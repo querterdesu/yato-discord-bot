@@ -9,11 +9,11 @@ module.exports = {
 	guildOnly: true,
 	cooldown: 0,
 	permissions: ['MANAGE_MESSAGES'],
-	execute(message, args, self) {
+    execute(message, args, self) {
+        const [misc, duration, misc2, ...reasonA] = args
         const userTagged = message.mentions.users.first();
-        const duration = args[1];
         const durationMod = messageUtil.verifyTime(args[2]);
-        const reason = args.slice(3).join(' ');
+        const reason = reasonA.join(' ');
         if (!userTagged) messageUtil.sendError('Could not retrieve user from message!');
         const memberTagged = message.guild.member(userTagged);
         if (!memberTagged) messageUtil.sendError('The user exists, but isn\'t in this server!');
