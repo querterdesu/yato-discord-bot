@@ -22,7 +22,7 @@ module.exports = {
                         } else if (homework['status'] != '-') {
                             status = 'Przesłano';
                         }
-                        const hwEmbed = new Discord.Embed()
+                        const hwEmbed = new Discord.MessageEmbed()
                             .setColor('#bbbbbb')
                             .setAuthor(`${homework['user']}`, '', '')
                             .setTitle(`${data['title']}`)
