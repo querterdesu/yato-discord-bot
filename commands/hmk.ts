@@ -1,4 +1,5 @@
 const Librus = require('librus-api');
+const Discord = require('discord.js');
 let client = new Librus();
 
 module.exports = {
@@ -21,7 +22,17 @@ module.exports = {
                         } else if (homework['status'] != '-') {
                             status = 'Przesłano';
                         }
-                        message.channel.send(`\n*Zadane przez:* ${homework['user']}\n*Tytuł:* ${data['title']}\n*Treść:* ${data['content']}\n*Data wykonania:* ${data['to']}\nStatus: ${status}`)
+                        const hwEmbed = new Discord.Embed()
+                            .setColor('#bbbbbb')
+                            .setAuthor(`${homework['user']}`, '', '')
+                            .setTitle(`${data['title']}`)
+                            .setDescription(`${data['content']}`)
+                            .addFields(
+                                { name: 'Termin', value: `${data['to']}` },
+                                { name: 'Status', value: `${status}`},
+                            )
+                            .setFooter(`AID: ${message.member.id}`, '');
+                        message.channel.send(hwEmbed);
                     });
                 }
             });
