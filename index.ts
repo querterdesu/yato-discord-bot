@@ -18,8 +18,6 @@ client.once('ready', () => {
 	client.user.setActivity('448 kbps of methe', { type: 'PLAYING' });
 });
 
-
-
 client.on('message', msg => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
