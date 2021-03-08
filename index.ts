@@ -7,15 +7,39 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const cooldowns = new Discord.Collection();
 const messageUtil = require('./messages.ts');
 const Canvas = require('canvas');
+let counters = JSON.parse(fs.readFileSync('./counters.json'));
+const { Sequelize, DataTypes } = require('sequelize');
 
 for (const file of commandFiles) {
 	const cmd = require(`./commands/${file}`);
 	client.commands.set(cmd.name, cmd);
 }
 
+let warningsCount = counters.warningsCount;
+
+const sequelize = new Sequelize({
+	dialect: 'sqlite',
+	storage: 'database.sqlite',
+});
+
+const Warnings = sequelize.define('warnings', {
+	id: {
+		type: DataTypes.INT,
+		unique: true,
+	},
+	user_id: {
+		type: DataTypes.BIGINT,
+	},
+	description: {
+		type: DataTypes.TEXT,
+	}
+});
+
+
 client.once('ready', () => {
 	console.log('Ready!');
 	client.user.setActivity('448 kbps of methe', { type: 'PLAYING' });
+	Warnings.sync();
 });
 
 client.on('message', msg => {
@@ -80,6 +104,17 @@ client.on('message', msg => {
 		messageUtil.sendError(msg, 'There was an error executing that command! \nPlease contact the server administrators.');
 	}
 });
+
+client.on('addWarning', async (member, description) => {
+	const warning = await Warnings.create({
+		id: warningsCount,
+		user_id: member.id,
+		description: description,
+	});
+	warningsCount++;
+	counters.warningsCount = warningsCount;
+	counters.writeFileSync('counters.json', JSON.stringify(counters, null, 4));
+})
 
 const applyText = (canvas, text) => {
 	const ctx = canvas.getContext('2d');

@@ -17,14 +17,8 @@ module.exports = {
             const memberTagged = msg.guild.member(userTagged);
             if (memberTagged) {
                 if (msg.member.roles.highest.comparePositionTo(memberTagged.roles.highest) > 0) {
-                    const warning = {
-                        id: `${memberTagged.id}`,
-                        reason: `${reason}`,
-                    };
-                    let data = JSON.parse( fs.readFileSync('../warnings.json') );
-                    data.warnings.push(warning);
-                    fs.writeFileSync('../warnings.json', JSON.stringify(data, null, 2));
-                    messageUtil.sendSuccess(msg, 'Successfully warned the user!');
+                    self.addWarning(memberTagged, reason);
+                    messageUtil.sendSuccess('Successfully added warning!')
                 }
             }
         }
