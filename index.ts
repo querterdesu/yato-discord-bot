@@ -17,7 +17,7 @@ for (const file of commandFiles) {
 
 let warningsCount = counters.warningsCount;
 
-const sequelize = new Sequelize({
+const sequelize = new Sequelize('database', 'user', 'password', {
 	dialect: 'sqlite',
 	storage: 'database.sqlite',
 });
